@@ -1,0 +1,14 @@
+# Vivado generated — safe to ignore
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.jou
+*.log
+*.str
+*.backup.xpr
+*.xpr
+
+# OS files
+.DS_Store
+Thumbs.db
