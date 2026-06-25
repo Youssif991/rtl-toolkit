@@ -1,8 +1,9 @@
-# Vivado generated — safe to ignore
+# Vivado generated
 *.cache/
 *.hw/
 *.ip_user_files/
 *.sim/
+*.srcs/
 *.jou
 *.log
 *.str

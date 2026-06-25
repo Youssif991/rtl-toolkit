@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 06/26/2026 01:52:59 AM
+// Create Date: 06/26/2026 02:03:56 AM
 // Design Name: 
-// Module Name: andgate
+// Module Name: orgate
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module andgate(
+module orgate(
     input A,
     input B,
     output C
     );
-    assign C = A & B;
+   assign C = A | B;
 endmodule
