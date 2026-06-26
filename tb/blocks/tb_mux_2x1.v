@@ -36,7 +36,7 @@ mux_2x1 dut (
 
 initial begin
 
-#10 D0 = 0; D1 = 0; S = 0;
+    D0 = 0; D1 = 0; S = 0;
 #10 D0 = 0; D1 = 0; S = 1;
 #10 D0 = 0; D1 = 1; S = 0;
 #10 D0 = 0; D1 = 1; S = 1;
@@ -44,7 +44,7 @@ initial begin
 #10 D0 = 1; D1 = 0; S = 1;
 #10 D0 = 1; D1 = 1; S = 0;
 #10 D0 = 1; D1 = 1; S = 1;
-
+#10 $finish;
 end
 
 endmodule
