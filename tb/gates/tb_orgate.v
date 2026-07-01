@@ -22,23 +22,27 @@
 
 module tb_orgate;
 
-reg      A;
-reg      B;
-wire     C;
+  reg  A;
+  reg  B;
+  wire C;
 
-orgate dut(
-.A(A),
-.B(B),
-.C(C)
-);
+  orgate dut (
+      .A(A),
+      .B(B),
+      .C(C)
+  );
 
-initial begin
+  initial begin
 
-    A = 0; B =0;
-#10 A = 0; B =1;
-#10 A = 1; B =0;
-#10 A = 1; B =1;
-#10 $finish;
+    A = 0;
+    B = 0;
+    #10 A = 0;
+    B = 1;
+    #10 A = 1;
+    B = 0;
+    #10 A = 1;
+    B = 1;
+    #10 $finish;
 
-end
+  end
 endmodule

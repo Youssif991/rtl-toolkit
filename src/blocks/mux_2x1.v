@@ -20,18 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module mux_2x1(
-    input D0,
-    input D1,
-    input S,
+module mux_2x1 (
+    input  D0,
+    input  D1,
+    input  S,
     output Y
-    );
-    
-    wire not_S;
-    wire out_G2;
-    wire out_G3;
-    
-//First implementation 
+);
+
+  wire not_S;
+  wire out_G2;
+  wire out_G3;
+
+  /*First implementation 
 
     notgate G1 (
     .A(S),
@@ -56,15 +56,19 @@ module mux_2x1(
     .C(Y)
     );
     
-    
-//Second implementation (easier one imo)
+    */
+  //Second implementation (easier one imo)
 
-    /*
+  /*
   assign not_S = ~S;
   assign out_G2 = D0 & not_S;
   assign out_G3 = D1 & S;
   
   assign Y = out_G2 | out_G3 ;
     */
-    
+
+  //Third implementation (Data flow)
+
+  assign Y = S ? D1 : D0;
+
 endmodule

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 06/26/2026 02:13:34 AM
+// Create Date: 06/29/2026 04:05:23 PM
 // Design Name: 
-// Module Name: tb_andgate
+// Module Name: mux
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,29 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module tb_andgate;
-
-  reg  A;
-  reg  B;
-  wire C;
-
-  andgate dut (
-      .A(A),
-      .B(B),
-      .C(C)
-  );
-
-  initial begin
-
-    A = 0;
-    B = 0;
-    #10 A = 0;
-    B = 1;
-    #10 A = 1;
-    B = 0;
-    #10 A = 1;
-    B = 1;
-    #10 $finish;
-  end
-
+module mux #(
+    parameter width = 4,
+    parameter selection = $clog2 (width)
+)(
+    input [width - 1 : 0] in,
+    input [selection - 1 : 0] s,
+    output out
+    );
+    
+    assign out = in[s];
 endmodule

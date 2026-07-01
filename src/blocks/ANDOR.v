@@ -20,15 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ANDOR(
-    input A,
-    input B,
-    input C,
+module ANDOR (
+    input  A,
+    input  B,
+    input  C,
     output F
-    );
-    
-    wire AB;
-    assign AB = A & B;
-    assign F = C & AB;
-    
+);
+
+  wire AB;
+  assign AB = A & B;
+  assign F  = C & AB;
+
 endmodule
