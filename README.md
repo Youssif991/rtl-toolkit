@@ -12,6 +12,34 @@ This workspace is a hands-on Verilog HDL learning repository for digital design.
   - [tb/gates](tb/gates): testbenches for gate-level designs.
 - [scripts](scripts): helper scripts for automation and simulation tasks.
 
+## How to run the code
+
+<details>
+<summary><strong>Linux / macOS</strong></summary>
+
+Run a specific testbench with:
+
+```bash
+make TB_FILE=tb/blocks/tb_Priority_Encoder.v
+```
+
+You can replace the testbench path with any other file under the [tb](tb) folder.
+
+</details>
+
+<details>
+<summary><strong>Windows</strong></summary>
+
+Use the same command from Git Bash, WSL, or another Unix-like shell:
+
+```bash
+make TB_FILE=tb/blocks/tb_Priority_Encoder.v
+```
+
+If you are using a different shell, make sure the required tools from the [Makefile](Makefile) are available in your environment.
+
+</details>
+
 ## Project files
 
 - [Makefile](Makefile): build and simulation helpers.
