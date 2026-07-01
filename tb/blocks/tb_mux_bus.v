@@ -46,11 +46,12 @@ module tb_mux_bus;
   initial begin
     // Initialize inputs
     in = 0;
-    s  = 0;
+    s = 0;
 
     total_input_values = 1 << (bus * inputs);
 
-    $monitor("Time: %0t | Selection: %b | Input: %b | Output: %b", $time, s, in, out); // Monitor the signals
+    $monitor("Time: %0t | Selection: %b | Input: %b | Output: %b", $time, s, in,
+             out);  // Monitor the signals
 
     // Apply test vectors for all possible input combinations and selection values
     for (input_value = 0; input_value < total_input_values; input_value = input_value + 1) begin
