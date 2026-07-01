@@ -1,15 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Youssef
 // 
 // Create Date: 06/26/2026 02:52:53 AM
 // Design Name: 
 // Module Name: tb_orgate
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
+// Tool Versions: Vivado 2025.2
+// Description: Insert description here
 // 
 // Dependencies: 
 // 
@@ -18,7 +15,6 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
 
 module tb_orgate;
 

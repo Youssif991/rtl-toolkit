@@ -1,15 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Youssef
 // 
 // Create Date: 06/29/2026 02:07:49 AM
 // Design Name: 
 // Module Name: dec_4x16
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
+// Tool Versions: Vivado 2025.2
+// Description: Insert description here
 // 
 // Dependencies: 
 // 
@@ -19,7 +16,6 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
 module dec_4x16 (
     input [3:0] in,
     input en,
@@ -27,5 +23,6 @@ module dec_4x16 (
 );
 
   assign out = en ? 16'b1 << in : 0;
+  
 
 endmodule

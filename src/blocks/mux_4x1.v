@@ -2,9 +2,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Engineer: Youssef
 // 
-// Create Date: 06/26/2026 02:04:37 AM
+// Create Date: 06/29/2026 04:04:14 PM
 // Design Name: 
-// Module Name: notgate
+// Module Name: mux_4x1
 // Tool Versions: Vivado 2025.2
 // Description: Insert description here
 // 
@@ -16,9 +16,9 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module notgate(
-    input A,
-    output B
+module mux_4x1(
+    input f,
+    input [1:0] s,
+    input [3:0] out
     );
-    assign B = ~A;
 endmodule

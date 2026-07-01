@@ -2,9 +2,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 // Engineer: Youssef
 // 
-// Create Date: 06/26/2026 02:04:37 AM
+// Create Date: 06/29/2026 05:14:00 PM
 // Design Name: 
-// Module Name: notgate
+// Module Name: mux_bus
 // Tool Versions: Vivado 2025.2
 // Description: Insert description here
 // 
@@ -16,9 +16,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module notgate(
-    input A,
-    output B
+module mux_bus #(
+parameter bus = 4,
+parameter selection = $clog2 (bus)
+)(
+    input [bus - 1:0] in,
+    input [selection - 1:0] s,
+    output [bus - 1:0] out
     );
-    assign B = ~A;
+    
+    
 endmodule

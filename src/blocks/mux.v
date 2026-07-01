@@ -1,15 +1,12 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Engineer: Youssef
 // 
 // Create Date: 06/29/2026 04:05:23 PM
 // Design Name: 
 // Module Name: mux
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
+// Tool Versions: Vivado 2025.2
+// Description: Insert description here
 // 
 // Dependencies: 
 // 
@@ -18,7 +15,6 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-
 
 module mux #(
     parameter width = 4,
