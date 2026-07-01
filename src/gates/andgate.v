@@ -16,10 +16,10 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module andgate(
-    input A,
-    input B,
+module andgate (
+    input  A,
+    input  B,
     output C
-    );
-    assign C = A & B;
+);
+  assign C = A & B;
 endmodule

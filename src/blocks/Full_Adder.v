@@ -16,14 +16,14 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module Full_Adder(
-    input A,
-    input B,
-    input Cin,
+module Full_Adder (
+    input  A,
+    input  B,
+    input  Cin,
     output Sum,
     output Cout
-    );
-    /*
+);
+  /*
     wire AB_xor;
     wire AB_and;
     wire AB_Cin;
@@ -35,6 +35,6 @@ module Full_Adder(
     assign Sum = AB_xor ^ Cin;
     assign Cout = AB_Cin | AB_and;
     */
-    //Second Implementations
-    assign {Cout, Sum} = A + B + Cin;
+  //Second Implementations
+  assign {Cout, Sum} = A + B + Cin;
 endmodule

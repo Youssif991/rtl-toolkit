@@ -23,6 +23,6 @@ module dec_4x16 (
 );
 
   assign out = en ? 16'b1 << in : 0;
-  
+
 
 endmodule

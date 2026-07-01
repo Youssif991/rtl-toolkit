@@ -16,9 +16,9 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module notgate(
-    input A,
+module notgate (
+    input  A,
     output B
-    );
-    assign B = ~A;
+);
+  assign B = ~A;
 endmodule
