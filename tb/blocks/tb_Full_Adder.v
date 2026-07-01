@@ -22,29 +22,34 @@
 
 module tb_Full_Adder;
 
-reg A;
-reg B;
-reg Cin;
-wire Sum;
-wire Cout;
+  reg A;
+  reg B;
+  reg Cin;
+  wire Sum;
+  wire Cout;
+  integer i;
 
-Full_Adder dut (
-.A(A),
-.B(B),
-.Cin(Cin),
-.Sum(Sum),
-.Cout(Cout)
-);
+  Full_Adder dut (
+      .A(A),
+      .B(B),
+      .Cin(Cin),
+      .Sum(Sum),
+      .Cout(Cout)
+  );
 
-initial begin 
-#10     A = 0;      B = 0;      Cin = 0;
-#10     A = 0;      B = 0;      Cin = 1;
-#10     A = 0;      B = 1;      Cin = 0;
-#10     A = 0;      B = 1;      Cin = 1;
-#10     A = 1;      B = 0;      Cin = 0;
-#10     A = 1;      B = 0;      Cin = 1;
-#10     A = 1;      B = 1;      Cin = 0;
-#10     A = 1;      B = 1;      Cin = 1;
-end
+  initial begin
+
+    A   = 0;
+    B   = 0;
+    Cin = 0;
+
+    $monitor("Time: %0t | A: %b | B: %b | Cin: %b | Sum: %b | Cout: %b", $time, A, B, Cin, Sum, Cout);
+
+    for (i = 0; i < 8; i = i + 1) begin
+      {A, B, Cin} = i;
+      #10;
+    end
+
+  end
 
 endmodule
