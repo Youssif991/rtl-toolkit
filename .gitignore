@@ -9,7 +9,10 @@
 *.str
 *.backup.xpr
 *.xpr
-
+*.wcfg
 # OS files
 .DS_Store
 Thumbs.db
+src/.vscode/settings.json
+
+src/blocks/dummyexample.v
