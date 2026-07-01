@@ -10,9 +10,26 @@
 *.backup.xpr
 *.xpr
 *.wcfg
-# OS files
+*.pb
+*.wdb
+*.txt
+
+# OS and Editor files
 .DS_Store
 Thumbs.db
 src/.vscode/settings.json
+RTL.code-workspace
 
+# Exclude dummy/test source files if no longer needed
 src/blocks/dummyexample.v
+
+
+# Simulation Data Types & Dumps
+xsim.dir/
+.Xil/
+*.vcd          # Value Change Dump (Standard simulator text dump)
+*.wdb          # Vivado Waveform Database (Binary wave data)
+*.snapshot     # Compiled simulation snapshots
+*.proto        # Protocol compiler outputs
+*.tcl.wcfg     # Auto-generated default waveform configurations
+.vscode/settings.json
