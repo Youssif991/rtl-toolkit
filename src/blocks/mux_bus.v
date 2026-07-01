@@ -20,13 +20,15 @@
 module mux_bus #(
     parameter bus = 4,
     parameter inputs = 4,
-    parameter selection = $clog2(inputs) // Calculate the number of selection lines needed based on the number of inputs
+    parameter selection = $clog2(
+        inputs
+    )  // Calculate the number of selection lines needed based on the number of inputs
 ) (
     input [bus*inputs - 1:0] in,
     input [selection - 1:0] s,
     output [bus - 1:0] out
 );
 
-  assign out = in[s*bus+:bus]; // Select the appropriate bus based on the selection signal
+  assign out = in[s*bus+:bus];  // Select the appropriate bus based on the selection signal
 
 endmodule
