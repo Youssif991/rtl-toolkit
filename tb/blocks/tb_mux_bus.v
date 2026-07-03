@@ -24,12 +24,13 @@ module tb_mux_bus;
   localparam selection = $clog2(inputs);
 
   // Define the signals for the testbench
-  reg [bus*inputs - 1:0] in;
-  reg [selection - 1:0] s;
-  wire [bus - 1:0] out;
-  integer input_value;
-  integer sel_value;
-  integer total_input_values;
+  reg     [bus*inputs-1:0] in;
+  reg     [ selection-1:0] s;
+  wire    [       bus-1:0] out;
+
+  integer                  pattern;  // one 4-bit pattern to test per iteration (0-15)
+  integer                  sel_value;  // which input bus to select (0-3)
+  integer                  errors = 0;
 
   // Instantiate the mux_bus module
   mux_bus #(
@@ -43,27 +44,38 @@ module tb_mux_bus;
   );
 
   // Testbench procedure
-  initial begin
-    // Initialize inputs
+  initial begin : testbench
     in = 0;
-    s = 0;
+    s  = 0;
 
-    total_input_values = 1 << (bus * inputs);
+    $monitor("Time: %0t | Selection: %b | Input: %b | Output: %b", $time, s, in, out);
 
-    $monitor("Time: %0t | Selection: %b | Input: %b | Output: %b", $time, s, in,
-             out);  // Monitor the signals
+    // Test patterns for each input bus
+    for (pattern = 0; pattern < 16; pattern = pattern + 1) begin : test_pattern
+      in = {4{pattern[3:0]}};  // same 4-bit pattern in all 4 slots
 
-    // Apply test vectors for all possible input combinations and selection values
-    for (input_value = 0; input_value < total_input_values; input_value = input_value + 1) begin
-      in = input_value;
       for (sel_value = 0; sel_value < inputs; sel_value = sel_value + 1) begin
         s = sel_value;
-        #10;  // Wait for 10 time units
+        #10;
+
+        // self-check: out should always equal the selected 4-bit pattern
+        if (out !== pattern[3:0]) begin   : mismatch
+          errors = errors + 1;
+          $display("FAIL at time %0t: s=%0d pattern=%0d | out=%b expected=%b", $time, sel_value,
+                   pattern, out, pattern[3:0]);
+        end
       end
     end
 
-    $finish;  // End simulation
+    #10;
 
+    if (errors == 0) begin : pass
+      $display("TEST PASSED — all checks matched");
+    end else begin : fail
+      $display("TEST FAILED — %0d mismatches found", errors);
+    end
+
+    $finish;
   end
 
 endmodule
