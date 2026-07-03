@@ -9,8 +9,7 @@ This isn't just a set of RTL exercises — it's built around a real verification
 | Category | Modules |
 |---|---|
 | Gates | AND, OR, NOT |
-| Combinational | Full Adder, 2x1 MUX, N-to-1 MUX (parameterized), 4x16 Decoder, Priority Encoder |
-| Sequential | JK Flip-Flop |
+| Blocks | Various combinational and sequential blocks |
 
 Each module lives in `src/`, paired with a testbench of the same name in `tb/`.
 
