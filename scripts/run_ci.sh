@@ -8,16 +8,13 @@
 
 set -uo pipefail   # NOTE: not using -e, we want to run ALL testbenches even if one fails
 
-DESIGN_FILES=$(find src -name "*.v")
 TB_FILES=$(find tb -name "tb_*.v")
 
 TOTAL=0
 PASSED=0
 FAILED_LIST=()
 
-echo " Discovered design files:"
-echo "$DESIGN_FILES" | sed 's/^/   /'
-echo " Discovered testbenches:"
+echo "Discovered testbenches:"
 echo "$TB_FILES" | sed 's/^/   /'
 
 for TB in $TB_FILES; do
@@ -25,11 +22,21 @@ for TB in $TB_FILES; do
     TB_NAME=$(basename "$TB" .v)
     OUT_BIN="/tmp/${TB_NAME}_sim"
 
-    echo ""
-    echo " Running: $TB_NAME"
+    # Match testbench to its own design file by name: tb_X.v -> X.v
+    DUT_NAME="${TB_NAME#tb_}"
+    DUT_FILE=$(find src -iname "${DUT_NAME}.v")
 
-    # Compile
-    if ! iverilog -g2012 -o "$OUT_BIN" $DESIGN_FILES "$TB"; then
+    echo ""
+    echo "Running: $TB_NAME  (DUT: ${DUT_FILE:-NOT FOUND})"
+
+    if [ -z "$DUT_FILE" ]; then
+        echo "COULD NOT FIND MATCHING DESIGN FILE FOR: $TB_NAME"
+        FAILED_LIST+=("$TB_NAME (no matching src file for '$DUT_NAME.v')")
+        continue
+    fi
+
+    # Compile — only this testbench + its own DUT
+    if ! iverilog -g2012 -o "$OUT_BIN" "$DUT_FILE" "$TB"; then
         echo "COMPILE ERROR: $TB_NAME"
         FAILED_LIST+=("$TB_NAME (compile error)")
         continue
@@ -53,7 +60,7 @@ for TB in $TB_FILES; do
 done
 
 echo ""
-echo " CI SUMMARY: $PASSED / $TOTAL testbenches passed"
+echo "CI SUMMARY: $PASSED / $TOTAL testbenches passed"
 
 if [ ${#FAILED_LIST[@]} -ne 0 ]; then
     echo "Failed testbenches:"
