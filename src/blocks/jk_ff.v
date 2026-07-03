@@ -26,7 +26,7 @@ module jk_ff (
 );
 
   always @(posedge clk or negedge rstn) begin
-    if (!rstn) begin : Reset Button // Asynchronous reset
+    if (!rstn) begin : Async_Reset// Asynchronous reset
       q <= 1'b0;
       q_bar <= 1'b1;
     end else begin
