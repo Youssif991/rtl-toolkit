@@ -23,7 +23,7 @@ module d_latch (
     output reg q
 );
 
-  always @(*) begin
+  always @(en or rstn or en) begin
     if (!rstn) begin
       q <= 1'b0;
     end else if (en) begin
