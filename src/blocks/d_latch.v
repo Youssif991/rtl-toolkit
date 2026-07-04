@@ -17,16 +17,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module d_latch (
-    input d,
-    input en,
-    input rstn,
-    output reg q
+    input d, // Data input
+    input en, // Enable input
+    input rstn, // Reset input (active low)
+    output reg q // Output
 );
 
-  always @(en or rstn or en) begin
-    if (!rstn) begin
+  always @(en or rstn or en) begin : Latch_Logic
+    if (!rstn) begin : Async_Reset // Asynchronous reset
       q <= 1'b0;
-    end else if (en) begin
+    end else if (en) begin : Latch_Enable // When enable is high, latch the value of D
       q <= d;
     end
   end
