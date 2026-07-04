@@ -34,7 +34,6 @@ module tb_modN_ctr;
   // Golden reference model
   reg [WIDTH-1:0] expected_count;
   integer errors = 0;
-  integer i;
 
   // Instantiate the modN_ctr module
   modN_ctr #(
