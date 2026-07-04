@@ -3,10 +3,12 @@
 // Engineer: Youssef
 // 
 // Create Date: 07/02/2026 23:29:04
-// Design Name: 
+// Design Name: JK Flip-Flop (edge-triggered)
 // Module Name: jk_ff
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Edge-triggered JK flip-flop with asynchronous active-low
+//              reset. Outputs `q` and `q_bar`; supports set, reset,
+//              hold and toggle behaviour on clock edges.
 // 
 // Dependencies: 
 // 

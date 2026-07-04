@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 02:33:35 AM
-// Design Name: 
+// Design Name: 2-to-1 Multiplexer
 // Module Name: mux_2x1
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Selects between D0 and D1 based on select `S`. Outputs
+//              Y = S ? D1 : D0. Combinational single-bit mux.
 // 
 // Dependencies: 
 // 

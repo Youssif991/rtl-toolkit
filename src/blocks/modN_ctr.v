@@ -6,7 +6,8 @@
 // Design Name: Mod-N Counter
 // Module Name: modN_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Parametrizable modulo-N up-counter with asynchronous
+//              active-low reset. Counter width is calculated from N.
 // 
 // Dependencies: 
 // 

@@ -3,10 +3,12 @@
 // Engineer: Youssef
 // 
 // Create Date: 07/01/2026 21:46:45
-// Design Name: 
+// Design Name: Priority Encoder (bus-based)
 // Module Name: Priority_Encoder
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Scans concatenated input buses and assigns the output
+//              to a non-zero input bus. Later input buses override earlier
+//              ones in the current implementation (index-based priority).
 // 
 // Dependencies: 
 // 

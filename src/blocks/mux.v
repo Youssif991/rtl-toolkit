@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/29/2026 04:05:23 PM
-// Design Name: 
+// Design Name: Indexed Multiplexer
 // Module Name: mux
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Selects a single bit from the input vector `in` using
+//              index `s` and drives `out` with the selected bit.
 // 
 // Dependencies: 
 // 

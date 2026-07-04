@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 04:22:48 PM
-// Design Name: 
+// Design Name: 1-bit Full Adder
 // Module Name: Full_Adder
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Performs single-bit addition with carry-in and carry-out.
+//              Outputs Sum and Cout for inputs A, B, and Cin.
 // 
 // Dependencies: 
 // 

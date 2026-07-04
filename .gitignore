@@ -13,6 +13,7 @@
 *.pb
 *.wdb
 *.txt
+*.out
 
 # OS and Editor files
 .DS_Store

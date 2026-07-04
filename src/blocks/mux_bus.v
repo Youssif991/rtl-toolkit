@@ -3,7 +3,7 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/29/2026 05:14:00 PM
-// Design Name: 
+// Design Name: Bus Multiplexer (parameterizable)
 // Module Name: mux_bus
 // Tool Versions: Vivado 2025.2
 // Description: This module is a multiplexer that selects one of the input buses based on the selection signal.
