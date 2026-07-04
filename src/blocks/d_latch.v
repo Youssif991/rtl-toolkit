@@ -23,7 +23,7 @@ module d_latch (
     output reg q // Output
 );
 
-  always @(en or rstn or en) begin : Latch_Logic
+  always @(en or rstn or d) begin : Latch_Logic
     if (!rstn) begin : Async_Reset // Asynchronous reset
       q <= 1'b0;
     end else if (en) begin : Latch_Enable // When enable is high, latch the value of D
