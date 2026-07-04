@@ -61,4 +61,9 @@ module tb_ANDOR;
 
   end
 
+  initial begin
+    $dumpfile("tb_ANDOR.vcd");
+    $dumpvars(0, tb_ANDOR);
+  end
+
 endmodule

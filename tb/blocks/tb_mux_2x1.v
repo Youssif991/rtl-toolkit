@@ -60,4 +60,9 @@ module tb_mux_2x1;
     #10 $finish;
   end
 
+  initial begin
+    $dumpfile("tb_mux_2x1.vcd");
+    $dumpvars(0, tb_mux_2x1);
+  end
+
 endmodule

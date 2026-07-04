@@ -80,4 +80,9 @@ module tb_mux_bus;
     $finish;
   end
 
+  initial begin
+    $dumpfile("tb_mux_bus.vcd");
+    $dumpvars(0, tb_mux_bus);
+  end
+
 endmodule

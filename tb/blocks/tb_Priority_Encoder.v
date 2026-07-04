@@ -68,4 +68,9 @@ module tb_Priority_Encoder;
 
   end
 
+  initial begin
+    $dumpfile("tb_Priority_Encoder.vcd");
+    $dumpvars(0, tb_Priority_Encoder);
+  end
+
 endmodule

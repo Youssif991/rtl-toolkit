@@ -41,5 +41,8 @@ module tb_andgate;
     B = 1;
     #10 $finish;
   end
-
+  initial begin
+    $dumpfile("tb_andgate.vcd");
+    $dumpvars(0, tb_andgate);
+  end
 endmodule

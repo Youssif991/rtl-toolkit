@@ -49,4 +49,9 @@ module tb_Full_Adder;
 
   end
 
+  initial begin
+    $dumpfile("tb_Full_Adder.vcd");
+    $dumpvars(0, tb_Full_Adder);
+  end
+
 endmodule

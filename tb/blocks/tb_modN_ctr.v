@@ -83,6 +83,11 @@ module tb_modN_ctr;
     $finish;
   end
 
+  initial begin
+    $dumpfile("tb_modN_ctr.vcd");
+    $dumpvars(0, tb_modN_ctr);
+  end
+
   // Live monitor
   initial begin : Monitor_Outputs
     $monitor("Time=%0t | rstn=%b | dut_count=%0d expected_count=%0d", $time, rstn, count,

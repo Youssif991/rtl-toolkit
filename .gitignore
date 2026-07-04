@@ -24,6 +24,8 @@ RTL.code-workspace
 # Exclude dummy/test source files if no longer needed
 src/blocks/dummyexample.v
 
+# Waveform dumps (Icarus $dumpfile output)
+*.vcd
 
 # Simulation Data Types & Dumps
 xsim.dir/
