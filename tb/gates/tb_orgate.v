@@ -42,7 +42,10 @@ module tb_orgate;
     #10 $finish;
 
   end
+
   initial begin
     $dumpfile("tb_orgate.vcd");
     $dumpvars(0, tb_orgate);
-  endendmodule
+  end
+
+endmodule
