@@ -3,11 +3,12 @@
 // Engineer: Youssef
 // 
 // Create Date: 07/03/2026 17:14:08
-// Design Name: 
+// Design Name: JK Flip-Flop Testbench
 // Module Name: tb_jk_ff
 // Tool Versions: Vivado 2025.2
-// Description: Testbench for JK flip-flop module where each input combination is tested and compared against a reference model. Random stimulus is also applied to stress test the design.
-// The inputs are fed in the negative edge of the clock to ensure that the outputs are stable and can be compared against the reference model. The testbench reports any mismatches found during simulation.
+// Description: Testbench for `jk_ff` that verifies set/reset/hold/toggle
+//              behaviors. Uses a golden reference model and directed plus
+//              random stimulus; reports mismatches found during simulation.
 // Dependencies: 
 // 
 // Revision:

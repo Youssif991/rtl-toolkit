@@ -3,10 +3,12 @@
 // Engineer: Youssef
 // 
 // Create Date: 07/01/2026 20:06:08
-// Design Name: 
+// Design Name: Bus Multiplexer Testbench
 // Module Name: tb_mux_bus
 // Tool Versions: Vivado 2025.2
-// Description:
+// Description: Self-checking testbench for `mux_bus`. Iterates patterns
+//              and selection values, verifying that `out` matches the
+//              selected sub-bus. Reports mismatches.
 // 
 // Dependencies: 
 // 

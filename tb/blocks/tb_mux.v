@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/29/2026 04:18:45 PM
-// Design Name: 
+// Design Name: Indexed Multiplexer Testbench
 // Module Name: tb_mux
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Exhaustively tests the `mux` module by iterating input
+//              vectors and selection indices, monitoring `out` for each.
 // 
 // Dependencies: 
 // 

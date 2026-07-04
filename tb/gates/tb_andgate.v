@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 02:13:34 AM
-// Design Name: 
+// Design Name: AND Gate Testbench
 // Module Name: tb_andgate
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Simple testbench enumerating input combinations for
+//              `andgate` and printing the resulting output `C`.
 // 
 // Dependencies: 
 // 

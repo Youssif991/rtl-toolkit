@@ -3,10 +3,12 @@
 // Engineer: Youssef
 // 
 // Create Date: 07/01/2026 23:09:05
-// Design Name: 
+// Design Name: Priority Encoder Testbench
 // Module Name: tb_Priority_Encoder
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Provides directed and random stimulus to the
+//              `Priority_Encoder` to verify selection and priority
+//              behavior under various input conditions.
 // 
 // Dependencies: 
 // 

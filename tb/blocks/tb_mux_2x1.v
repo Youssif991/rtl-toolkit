@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 02:57:03 AM
-// Design Name: 
+// Design Name: 2-to-1 Multiplexer Testbench
 // Module Name: tb_mux_2x1
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Applies all combinations of D0, D1 and S to verify
+//              the behavior of `mux_2x1` and prints results.
 // 
 // Dependencies: 
 // 

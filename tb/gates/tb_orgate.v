@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 02:52:53 AM
-// Design Name: 
+// Design Name: OR Gate Testbench
 // Module Name: tb_orgate
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Simple testbench enumerating input combinations for
+//              `orgate` and printing the resulting output `C`.
 // 
 // Dependencies: 
 // 

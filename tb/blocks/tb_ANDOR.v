@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 03:01:03 AM
-// Design Name: 
+// Design Name: ANDOR Testbench
 // Module Name: tb_ANDOR
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Stimulates the ANDOR module through all input combinations
+//              and prints the resulting output `F`. Simple vector test.
 // 
 // Dependencies: 
 // 

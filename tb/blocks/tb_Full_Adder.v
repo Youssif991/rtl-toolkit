@@ -3,10 +3,11 @@
 // Engineer: Youssef
 // 
 // Create Date: 06/26/2026 06:39:41 PM
-// Design Name: 
+// Design Name: Full Adder Testbench
 // Module Name: tb_Full_Adder
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Exhaustive testbench for `Full_Adder`; iterates through
+//              all A, B, Cin combinations and displays Sum and Cout.
 // 
 // Dependencies: 
 // 

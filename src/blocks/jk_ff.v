@@ -19,22 +19,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module jk_ff (
-    input j, // Set input
-    input k, // Reset input
-    input clk, // Clock input
-    input rstn, // Active low reset
-    output reg q, // Output Q
-    output reg q_bar // Output Q bar
+    input j,  // Set input
+    input k,  // Reset input
+    input clk,  // Clock input
+    input rstn,  // Active low reset
+    output reg q,  // Output Q
+    output reg q_bar  // Output Q bar
 );
 
   always @(posedge clk or negedge rstn) begin
-    if (!rstn) begin : Async_Reset// Asynchronous reset
+    if (!rstn) begin : Async_Reset  // Asynchronous reset
       q <= 1'b0;
       q_bar <= 1'b1;
     end else begin
       case ({
         j, k
-      }) // Concatenate J and K inputs to form a 2-bit value
+      })  // Concatenate J and K inputs to form a 2-bit value
         2'b00: begin : Maintain
           // Mantain current state
           q <= q;
