@@ -33,6 +33,7 @@ module tb_johnson_ctr;
   integer errors = 0;
   integer diff_count;
   reg [N - 1 : 0] prev_out;
+  reg have_prev;
 
   // Module instantation
   johnson_ctr #(
@@ -43,21 +44,26 @@ module tb_johnson_ctr;
       .out (out)
   );
 
-  // Golden reference
+ // Golden reference
   always @(posedge clk) begin : Reference
     if (rstn) begin
-      diff_count = 0;
-      for (i = 0; i < N; i = i + 1) begin
-        if (out[i] !== prev_out[i]) diff_count = diff_count + 1;
+      if (have_prev) begin
+        diff_count = 0;
+        for (i = 0; i < N; i = i + 1) begin
+          if (out[i] !== prev_out[i]) diff_count = diff_count + 1;
+        end
+
+        if (diff_count != 1) begin
+          errors = errors + 1;
+          $display("FAIL at time %0t: expected exactly 1 bit to change, got %0d", $time, diff_count);
+        end
       end
 
-      if (diff_count != 1) begin
-        errors = errors + 1;
-        $display("FAIL at time %0t: expected exactly 1 bit to change, got %0d", $time, diff_count);
-      end
+      prev_out  = out;     
+      have_prev = 1'b1;    
 
-      prev_out = out;
-
+    end else begin
+      have_prev = 1'b0;   
     end
   end
 
