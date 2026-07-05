@@ -31,7 +31,7 @@ module ripple_ctr #(
 
   genvar i;  // the loop variable
 
-  generate // to generate the total d flip flops needed for counting
+  generate  // to generate the total d flip flops needed for counting
     for (i = 0; i < N; i = i + 1) begin : ripple_stage
       d_ff d_inst (
           .d(q_bar[i]),
@@ -43,6 +43,6 @@ module ripple_ctr #(
     end
   endgenerate
 
-  assign out = q; // The total count from the flip flops
+  assign out = q;  // The total count from the flip flops
 
 endmodule

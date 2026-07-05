@@ -28,10 +28,10 @@ module johnson_ctr #(
     if (!rstn) out <= 0;
     else begin
 
-      out[N-1] <= ~out[0]; // in order to have the shifting pattern of the johnson counter
+      out[N-1] <= ~out[0];  // in order to have the shifting pattern of the johnson counter
 
       for (integer i = 0; i < N - 1; i = i + 1) begin : counting_loop
-        out [i] <= out[i + 1];
+        out[i] <= out[i+1];
       end
     end
   end
