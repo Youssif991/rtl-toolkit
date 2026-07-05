@@ -35,8 +35,8 @@ for TB in $TB_FILES; do
         continue
     fi
 
-    # Compile — only this testbench + its own DUT
-    if ! iverilog -g2012 -o "$OUT_BIN" "$DUT_FILE" "$TB"; then
+    # Includes all source files so dependencies resolve automatically
+    if ! iverilog -g2012 -o "$OUT_BIN" $(find src -name "*.v") "$TB"; then
         echo "COMPILE ERROR: $TB_NAME"
         FAILED_LIST+=("$TB_NAME (compile error)")
         continue
