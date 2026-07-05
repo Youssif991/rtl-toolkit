@@ -99,7 +99,7 @@ module tb_t_ff;
   initial begin : live_monitor
     $monitor("Time=%0t | rstn=%b t=%b | dut_q=%b expected_q=%b", $time, rstn, t, q, expected_q);
   end
-  
+
   // Vcd dump
   initial begin
     $dumpfile("tb_t_ff.vcd");

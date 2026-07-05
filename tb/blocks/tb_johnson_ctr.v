@@ -44,7 +44,7 @@ module tb_johnson_ctr;
       .out (out)
   );
 
- // Golden reference
+  // Golden reference
   always @(posedge clk) begin : Reference
     if (rstn) begin
       if (have_prev) begin
@@ -55,15 +55,16 @@ module tb_johnson_ctr;
 
         if (diff_count != 1) begin
           errors = errors + 1;
-          $display("FAIL at time %0t: expected exactly 1 bit to change, got %0d", $time, diff_count);
+          $display("FAIL at time %0t: expected exactly 1 bit to change, got %0d", $time,
+                   diff_count);
         end
       end
 
-      prev_out  = out;     
-      have_prev = 1'b1;    
+      prev_out  = out;
+      have_prev = 1'b1;
 
     end else begin
-      have_prev = 1'b0;   
+      have_prev = 1'b0;
     end
   end
 
