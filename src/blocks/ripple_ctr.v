@@ -35,7 +35,7 @@ module ripple_ctr #(
     for (i = 0; i < N; i = i + 1) begin : ripple_stage
       d_ff d_inst (
           .d(q_bar[i]),
-          .clk(i == 0 ? clk : q[i-1]),
+          .clk(i == 0 ? clk : q_bar[i-1]),
           .rstn(rstn),
           .q(q[i]),
           .q_bar(q_bar[i])
