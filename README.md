@@ -1,6 +1,6 @@
 # rtl-toolkit
 
-Tags: verilog, digital-design, rtl, fpga, testbench, vivado, icarus-verilog
+![Verilog](https://img.shields.io/badge/Verilog-RTL-blue) ![Digital Design](https://img.shields.io/badge/Digital%20Design-Logic-green) ![FPGA](https://img.shields.io/badge/FPGA-Design-orange) ![Testbench](https://img.shields.io/badge/Testbench-Self%20Checking-purple) ![Vivado](https://img.shields.io/badge/Vivado-Simulation-red) ![Icarus Verilog](https://img.shields.io/badge/Icarus%20Verilog-CI-yellow)
 
 A growing collection of digital logic modules in Verilog HDL, each backed by a self-checking testbench and verified automatically on every push via CI.
 
