@@ -41,8 +41,6 @@ module tb_mux;
     in = 0;
     s  = 0;
 
-
-
     $monitor("in=%0b s=%0b out=%0b", in, s, out);
 
     for (i = 0; i < (1 << (width + selection)); i = i + 1) begin
