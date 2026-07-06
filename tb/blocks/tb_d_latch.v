@@ -50,9 +50,8 @@ module tb_d_latch;
 
   // Golden reference model + checker
   always @(d, en, rstn, q) begin : Gold_reference
-    #1;
-    if (!rstn) expected_q = 1'b0;
-    else if (en) expected_q = d;
+    if (!rstn) expected_q <= 1'b0;
+    else if (en) expected_q <= d;
 
     if (q !== expected_q) begin : Checker
       errors = errors + 1;
