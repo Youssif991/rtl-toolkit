@@ -1,5 +1,7 @@
 # rtl-toolkit
 
+Tags: verilog, digital-design, rtl, fpga, testbench, vivado, icarus-verilog
+
 A growing collection of digital logic modules in Verilog HDL, each backed by a self-checking testbench and verified automatically on every push via CI.
 
 This isn't just a set of RTL exercises — it's built around a real verification methodology: reference models, directed + random stimulus, and automated pass/fail reporting, the same core practices used in professional digital design verification.
