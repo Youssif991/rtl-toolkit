@@ -54,21 +54,21 @@ module tb_shift_reg;
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_out <= 0;
     else begin
-        if(en)begin
-      case (dir)
+      if (en) begin
+        case (dir)
 
-        right: begin
-          expected_out <= expected_out >> 1;
-          expected_out[N-1] <= d;
-        end
+          right: begin
+            expected_out <= expected_out >> 1;
+            expected_out[N-1] <= d;
+          end
 
-        left: begin
-          expected_out <= expected_out << 1;
-          expected_out[0] <= d;
-        end
-        default: expected_out <= expected_out;
-      endcase
-        end
+          left: begin
+            expected_out <= expected_out << 1;
+            expected_out[0] <= d;
+          end
+          default: expected_out <= expected_out;
+        endcase
+      end
     end
   end
 
