@@ -34,8 +34,8 @@ module shift_reg #(
     else begin
       if (en) begin
         case (dir)
-          right: out <= {out[N-2 : 0], d};
-          left: out <= {d, out[N-2 : 0]};
+          left: out <= {out[N-2 : 0], d};
+          right: out <= {d, out[N-1 : 1]};
           default: out <= out;
         endcase
       end else out <= out;
