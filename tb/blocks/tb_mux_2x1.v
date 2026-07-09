@@ -9,7 +9,7 @@
 // Description: Applies all combinations of D0, D1 and S to verify
 //              the behavior of `mux_2x1` and prints results.
 // 
-// Dependencies: 
+// Dependencies: mux_2x1 (src/blocks/mux_2x1.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

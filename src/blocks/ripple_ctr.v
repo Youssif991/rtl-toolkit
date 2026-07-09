@@ -6,9 +6,13 @@
 // Design Name: Ripple Counter
 // Module Name: ripple_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Ripple counter is an asynchronous counter in which the all the flops except the first are clocked by the output of the preceding flop.
+// Description: N-bit asynchronous ripple counter built from cascaded D flip-flops.
+//              Each stage is clocked by the inverted output (`q_bar`) of the
+//              previous stage, creating a ripple effect. The first stage is
+//              driven by the external `clk`. Suitable for low-frequency
+//              division; propagation delay accumulates with each stage.
 // 
-// Dependencies: 
+// Dependencies: d_ff (src/blocks/d_ff.v)
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -23,15 +27,17 @@ module ripple_ctr #(
     input rstn,
     output [N - 1:0] out
 );
-  // Defining each flip flop output
-  wire [N - 1 : 0] q;  // the normal output that will be fed to the clock
-  wire [N - 1 : 0] q_bar;  // the inverted output which will be fed back to the input
+  // Internal flip-flop outputs: q drives the next stage's clock,
+  // q_bar is fed back to the D input for divide-by-2 operation
+  wire [N - 1 : 0] q;
+  wire [N - 1 : 0] q_bar;
 
-  // Generating the instantations
+  genvar i;
 
-  genvar i;  // the loop variable
-
-  generate  // to generate the total d flip flops needed for counting
+  // Generate N cascaded D flip-flop stages.
+  // Stage 0 is clocked by the external `clk`; subsequent stages are
+  // clocked by `q_bar` of the preceding stage (ripple / asynchronous).
+  generate
     for (i = 0; i < N; i = i + 1) begin : ripple_stage
       d_ff d_inst (
           .d(q_bar[i]),
@@ -43,6 +49,6 @@ module ripple_ctr #(
     end
   endgenerate
 
-  assign out = q;  // The total count from the flip flops
+  assign out = q;  // Parallel output of the counter
 
 endmodule

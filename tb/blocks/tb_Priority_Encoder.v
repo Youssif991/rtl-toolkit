@@ -10,7 +10,7 @@
 //              `Priority_Encoder` to verify selection and priority
 //              behavior under various input conditions.
 // 
-// Dependencies: 
+// Dependencies: Priority_Encoder (src/blocks/Priority_Encoder.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

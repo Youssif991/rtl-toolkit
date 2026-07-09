@@ -10,7 +10,7 @@
 //              reference model (toggle on t=1, hold on t=0, async reset)
 //              compared against the DUT on negedge clk. Covers directed
 //              reset/toggle/hold cases plus randomized stimulus.
-// Dependencies: 
+// Dependencies: t_ff (src/blocks/t_ff.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

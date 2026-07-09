@@ -9,7 +9,7 @@
 // Description: Stimulates the ANDOR module through all input combinations
 //              and prints the resulting output `F`. Simple vector test.
 // 
-// Dependencies: 
+// Dependencies: ANDOR (src/blocks/ANDOR.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

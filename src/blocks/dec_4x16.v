@@ -23,6 +23,7 @@ module dec_4x16 (
     output [15:0] out
 );
 
+  // Shift a 1 to the bit position indicated by `in` when enabled
   assign out = en ? 16'b1 << in : 0;
 
 

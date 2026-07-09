@@ -9,7 +9,7 @@
 // Description: Simple testbench enumerating input combinations for
 //              `andgate` and printing the resulting output `C`.
 // 
-// Dependencies: 
+// Dependencies: andgate (src/gates/andgate.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

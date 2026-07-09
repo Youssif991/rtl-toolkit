@@ -6,9 +6,12 @@
 // Design Name: Shift Register testbench
 // Module Name: tb_shift_reg
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `shift_reg` module. Uses a
+//              golden reference model (software shift-left/right) compared
+//              against the DUT on negedge clk. Covers directed left/right
+//              shift patterns, hold (en=0), and randomized stimulus.
 // 
-// Dependencies: 
+// Dependencies: shift_reg (src/blocks/shift_reg.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

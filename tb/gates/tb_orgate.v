@@ -9,7 +9,7 @@
 // Description: Simple testbench enumerating input combinations for
 //              `orgate` and printing the resulting output `C`.
 // 
-// Dependencies: 
+// Dependencies: orgate (src/gates/orgate.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

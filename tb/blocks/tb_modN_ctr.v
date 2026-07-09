@@ -10,7 +10,7 @@
 //              reference model to verify counting behavior including
 //              wraparound and reset behavior.
 // 
-// Dependencies: 
+// Dependencies: modN_ctr (src/blocks/modN_ctr.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

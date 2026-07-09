@@ -29,6 +29,7 @@ module mux_bus #(
     output [bus - 1:0] out
 );
 
-  assign out = in[s*bus+:bus];  // Select the appropriate bus based on the selection signal
+  // Index into the concatenated input buses using the selection signal
+  assign out = in[s*bus+:bus];
 
 endmodule

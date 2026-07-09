@@ -9,7 +9,7 @@
 // Description: Selects between D0 and D1 based on select `S`. Outputs
 //              Y = S ? D1 : D0. Combinational single-bit mux.
 // 
-// Dependencies: 
+// Dependencies: notgate, andgate, orgate (src/gates/) — used only in the commented first implementation
 // 
 // Revision:
 // Revision 0.01 - File Created

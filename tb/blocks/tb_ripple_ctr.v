@@ -6,9 +6,12 @@
 // Design Name: Ripple counter test bench
 // Module Name: tb_ripple_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `ripple_ctr` module. Uses a
+//              golden reference model (binary up-counter) compared against
+//              the DUT on negedge clk. Covers reset and multiple full-range
+//              counting cycles.
 // 
-// Dependencies: 
+// Dependencies: ripple_ctr (src/blocks/ripple_ctr.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

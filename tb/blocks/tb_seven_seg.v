@@ -6,9 +6,11 @@
 // Design Name: Seven Segment display test bench
 // Module Name: tb_seven_seg
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `seven_seg` decoder. Uses a
+//              golden reference model (duplicated case logic) to verify the
+//              segment pattern for all 10 BCD digits plus random inputs.
 // 
-// Dependencies: 
+// Dependencies: seven_seg (src/blocks/seven_seg.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

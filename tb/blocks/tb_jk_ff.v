@@ -9,7 +9,7 @@
 // Description: Testbench for `jk_ff` that verifies set/reset/hold/toggle
 //              behaviors. Uses a golden reference model and directed plus
 //              random stimulus; reports mismatches found during simulation.
-// Dependencies: 
+// Dependencies: jk_ff (src/blocks/jk_ff.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

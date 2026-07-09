@@ -6,7 +6,9 @@
 // Design Name: T Flip-Flop
 // Module Name: t_ff
 // Tool Versions: Vivado 2025.2
-// Description: T Flip-Flop toggles its output on the rising edge of the clock when the T input is high.
+// Description: Positive-edge-triggered T (toggle) flip-flop with asynchronous
+//              active-low reset. When `t` is asserted, `q` toggles on each
+//              rising clock edge; when `t` is low, `q` holds its current value.
 // Dependencies: 
 // 
 // Revision:
@@ -22,9 +24,11 @@ module t_ff (
     output reg q
 );
 
+  // Toggle `q` on rising clock edge when `t` is high; reset clears it
   always @(posedge clk or negedge rstn) begin : t_ff_logic
-    if (!rstn) q <= 1'b0;
-    else if (t) q <= ~q; // Toggle the output
+    if (!rstn)   q <= 1'b0;
+    else if (t)  q <= ~q;  // Toggle the output
+    // When t == 0, q retains its current value (implied latch)
   end
 
 endmodule

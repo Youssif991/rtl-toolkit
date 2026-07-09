@@ -6,9 +6,12 @@
 // Design Name: Johnson Counter Test Bench
 // Module Name: tb_johnson_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `johnson_ctr` module. Verifies
+//              that exactly one output bit changes per clock cycle (the
+//              defining property of Johnson/twisted-ring counters) by comparing
+//              each new value against the previous one.
 // 
-// Dependencies: 
+// Dependencies: johnson_ctr (src/blocks/johnson_ctr.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

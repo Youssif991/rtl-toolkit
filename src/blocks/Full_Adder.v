@@ -36,6 +36,7 @@ module Full_Adder (
     assign Sum = AB_xor ^ Cin;
     assign Cout = AB_Cin | AB_and;
     */
-  //Second Implementations
+  // Second implementation: use Verilog's built-in arithmetic.
+  // {Cout, Sum} acts as a 2-bit result of the addition.
   assign {Cout, Sum} = A + B + Cin;
 endmodule

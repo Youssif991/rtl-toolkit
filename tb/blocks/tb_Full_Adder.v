@@ -9,7 +9,7 @@
 // Description: Exhaustive testbench for `Full_Adder`; iterates through
 //              all A, B, Cin combinations and displays Sum and Cout.
 // 
-// Dependencies: 
+// Dependencies: Full_Adder (src/blocks/Full_Adder.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

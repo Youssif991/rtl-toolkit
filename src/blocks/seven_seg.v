@@ -6,8 +6,10 @@
 // Design Name: Seven Segment Display
 // Module Name: seven_seg
 // Tool Versions: Vivado 2025.2
-// Description: Seven Segement display which converts the BCD number to its equivalent number on a seven segement display.
-// It can either active high or active low based on the active_low parameter
+// Description: BCD-to-7-segment decoder. Maps a 4-bit BCD input (`in`) to a
+//              7-bit segment pattern (`out`) for driving a common-cathode or
+//              common-anode 7-segment display. The `active_low` parameter
+//              selects polarity: 0 for active-high segments, 1 for active-low.
 // Dependencies: 
 // 
 // Revision:

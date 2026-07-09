@@ -24,8 +24,8 @@ module ANDOR (
     output F
 );
 
-  wire AB;
-  assign AB = A & B;
-  assign F  = C | AB;
+  wire AB;         // Intermediate: AND of A and B
+  assign AB = A & B; // AB = 1 when both A and B are asserted
+  assign F  = C | AB; // F = 1 when C is asserted OR (A & B) is asserted
 
 endmodule

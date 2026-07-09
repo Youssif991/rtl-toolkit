@@ -9,7 +9,7 @@
 // Description: Testbench for the `d_latch` module.
 // It applies all combinations of D, EN, and RSTN inputs to verify the correct latching behavior and reset functionality.
 // The output Q is monitored for correctness against expected values.
-// Dependencies: 
+// Dependencies: d_latch (src/blocks/d_latch.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

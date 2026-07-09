@@ -6,7 +6,11 @@
 // Design Name: Johnson Counter
 // Module Name: johnson_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: N-bit Johnson (twisted-ring) counter. On each clock cycle the
+//              complement of the LSB is shifted into the MSB, and all bits are
+//              shifted right by one position. Produces 2×N unique states with
+//              only one bit transitioning per cycle, useful for glitch-free
+//              decoding in control and timing applications.
 // 
 // Dependencies: 
 // 
@@ -25,12 +29,14 @@ module johnson_ctr #(
 );
   integer i;
 
+  // Shift-right and inject the complement of the LSB into the MSB
   always @(posedge clk) begin
     if (!rstn) out <= 0;
     else begin
+      // Johnson (twisted-ring) feedback: complement of LSB goes to MSB
+      out[N-1] <= ~out[0];
 
-      out[N-1] <= ~out[0];  // in order to have the shifting pattern of the johnson counter
-
+      // Shift all bits right by one position
       for (i = 0; i < N - 1; i = i + 1) begin : counting_loop
         out[i] <= out[i+1];
       end

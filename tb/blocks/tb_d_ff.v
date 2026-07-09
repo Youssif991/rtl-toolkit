@@ -6,9 +6,12 @@
 // Design Name: D FlipFlop Test Bench
 // Module Name: tb_d_ff
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `d_ff` module. Uses a golden
+//              reference model (posedge-triggered D flip-flop with async reset)
+//              compared against the DUT on negedge clk. Covers directed reset/
+//              capture cases plus randomized stimulus.
 // 
-// Dependencies: 
+// Dependencies: d_ff (src/blocks/d_ff.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

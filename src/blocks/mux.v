@@ -26,5 +26,6 @@ module mux #(
     output out
     );
     
+    // Select the bit at index `s` from the input vector
     assign out = in[s];
 endmodule

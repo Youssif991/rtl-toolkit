@@ -6,8 +6,11 @@
 // Design Name: Gray Counter
 // Module Name: gray_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Gray Counter is just a binary counter but the output are converted to the gray code to achieve having only one bit changing in each transition,
-// This is typically used in FIFO Memories, Rotary encoders, ADC, etc. It is used to get less errors between transisions as the error rate will decrease when having only one bit change
+// Description: N-bit Gray-code counter. Maintains an internal binary counter
+//              whose value is converted to Gray code on every clock edge via
+//              the formula `gray = binary ^ (binary >> 1)`. Only one output bit
+//              toggles per cycle, reducing metastability risk in cross-clock-
+//              domain handshakes (e.g., FIFO pointers, rotary encoders, ADCs).
 // Dependencies: 
 // 
 // Revision:
@@ -26,14 +29,16 @@ module gray_ctr #(
 
   reg [N - 1 : 0] q;  // temporary variable to store the binary output
 
+  // Increment binary counter on each clock, then convert to Gray code
   always @(posedge clk or negedge rstn) begin
     if (!rstn) begin
       q   <= 0;
       out <= 0;
     end else begin
-      q   <= q + 1;
+      q   <= q + 1;  // Binary increment
 
-      out <= {q[N-1], q[N-1 : 1] ^ q[N-2 : 0]};  // converting the binary output to the grey output
+      // Convert binary to Gray: gray = binary ^ (binary >> 1)
+      out <= {q[N-1], q[N-1 : 1] ^ q[N-2 : 0]};
     end
   end
 endmodule

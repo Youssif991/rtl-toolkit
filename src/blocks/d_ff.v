@@ -6,7 +6,9 @@
 // Design Name: D FlipFlop
 // Module Name: d_ff
 // Tool Versions: Vivado 2025.2
-// Description: D FlipFlop implementation where at the positive edge the output is the same as the input D.
+// Description: Positive-edge-triggered D flip-flop with asynchronous active-low
+//              reset. Captures the value of `d` on the rising edge of `clk` and
+//              drives both `q` (buffered) and `q_bar` (inverted) outputs.
 // 
 // Dependencies: 
 // 
@@ -24,11 +26,12 @@ module d_ff (
     output q_bar
 );
 
+  // On rising clock edge, capture `d`; on negated reset, clear `q`
   always @(posedge clk or negedge rstn) begin
     if (!rstn) q <= 1'b0;
-    else q <= d;
+    else       q <= d;
   end
 
-  assign q_bar = ~q;
+  assign q_bar = ~q;  // Complementary output
 
 endmodule

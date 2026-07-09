@@ -9,7 +9,7 @@
 // Description: Exhaustively tests the `mux` module by iterating input
 //              vectors and selection indices, monitoring `out` for each.
 // 
-// Dependencies: 
+// Dependencies: mux (src/blocks/mux.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

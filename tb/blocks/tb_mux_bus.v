@@ -10,7 +10,7 @@
 //              and selection values, verifying that `out` matches the
 //              selected sub-bus. Reports mismatches.
 // 
-// Dependencies: 
+// Dependencies: mux_bus (src/blocks/mux_bus.v)
 // 
 // Revision:
 // Revision 0.01 - File Created

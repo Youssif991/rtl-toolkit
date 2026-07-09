@@ -6,9 +6,12 @@
 // Design Name: Gray Counter test bench
 // Module Name: tb_gray_ctr
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Self-checking testbench for the `gray_ctr` module. Verifies
+//              that exactly one output bit changes per clock cycle (the
+//              defining property of Gray-code counting) by comparing each
+//              new value against the previous one.
 // 
-// Dependencies: 
+// Dependencies: gray_ctr (src/blocks/gray_ctr.v)
 // 
 // Revision:
 // Revision 0.01 - File Created
