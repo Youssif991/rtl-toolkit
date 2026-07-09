@@ -45,7 +45,10 @@ module tb_gray_ctr;
       .out (out)
   );
 
-  // Golden reference: verify exactly one bit changes per cycle
+  // Golden reference: verify the single-bit-change property
+  // Gray-code counters toggle exactly one output bit per clock cycle.
+  // This checker records the previous output and counts bit differences
+  // on each positive edge, flagging any cycle where != 1 bit changed.
   always @(posedge clk or negedge rstn) begin : reference
     if (rstn) begin
       if (have_prev) begin

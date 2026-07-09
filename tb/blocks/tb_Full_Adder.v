@@ -43,6 +43,8 @@ module tb_Full_Adder;
   );
 
   // Test procedure: exhaustively iterate all 8 input combinations
+  // The golden reference ({Cout, Sum} = A + B + Cin) and self-checker
+  // run inline within this loop for each test vector.
   initial begin : test
     A   = 0;
     B   = 0;

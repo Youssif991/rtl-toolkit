@@ -38,7 +38,7 @@ module tb_mux_2x1;
       .Y (Y)
   );
 
-  // Golden reference
+  // Golden reference: compute Y = S ? D1 : D0
   always @(*) begin : reference
     expected_Y = S ? D1 : D0;
   end

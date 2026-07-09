@@ -40,7 +40,9 @@ module tb_seven_seg;
       .out(out)
   );
 
-  // Golden reference
+  // Golden reference: duplicate the BCD-to-7-segment decoding logic
+  // Maps each 4-bit BCD input to the corresponding 7-segment pattern.
+  // The active_low parameter inverts the output if needed.
   always @(*) begin : reference
     reg [6 : 0] out_active_high;
 

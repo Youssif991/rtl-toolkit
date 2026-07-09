@@ -6,9 +6,10 @@
 // Design Name: JK Flip-Flop Testbench
 // Module Name: tb_jk_ff
 // Tool Versions: Vivado 2025.2
-// Description: Testbench for `jk_ff` that verifies set/reset/hold/toggle
-//              behaviors. Uses a golden reference model and directed plus
-//              random stimulus; reports mismatches found during simulation.
+// Description: Self-checking testbench for the `jk_ff` module. Uses a
+//              golden reference model (JK truth table: hold, reset, set,
+//              toggle) compared against the DUT on negedge clk. Covers
+//              directed cases and randomized stimulus.
 // Dependencies: jk_ff (src/blocks/jk_ff.v)
 // 
 // Revision:

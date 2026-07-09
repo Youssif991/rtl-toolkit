@@ -6,9 +6,10 @@
 // Design Name: D-latch Testbench
 // Module Name: tb_d_latch
 // Tool Versions: Vivado 2025.2
-// Description: Testbench for the `d_latch` module.
-// It applies all combinations of D, EN, and RSTN inputs to verify the correct latching behavior and reset functionality.
-// The output Q is monitored for correctness against expected values.
+// Description: Self-checking testbench for the `d_latch` module. Uses a
+//              golden reference model (transparent latch with async reset)
+//              compared against the DUT on every input change. Covers
+//              transparency, hold, async reset, and randomized stimulus.
 // Dependencies: d_latch (src/blocks/d_latch.v)
 // 
 // Revision:
@@ -44,7 +45,11 @@ module tb_d_latch;
       .q(q)
   );
 
-  // Golden reference + checker
+  // Golden reference: model the latch behavior
+  // When rstn is low, output is forced to 0 (async reset).
+  // When en is high, the latch is transparent (q follows d).
+  // When en is low, the latch holds its previous value.
+  // The checker runs inline and flags any mismatch immediately.
   always @(d, en, rstn, q) begin : reference
     if (!rstn) expected_q <= 1'b0;
     else if (en) expected_q <= d;

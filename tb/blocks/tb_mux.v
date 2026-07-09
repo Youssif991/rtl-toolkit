@@ -45,6 +45,8 @@ module tb_mux;
   );
 
   // Test procedure: exhaustively iterate all (in, s) combinations
+  // The golden reference (expected_out = in[s]) and self-checker run
+  // inline within this loop for each test vector.
   initial begin : test
     in = 0;
     s  = 0;

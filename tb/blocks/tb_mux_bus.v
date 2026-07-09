@@ -47,6 +47,8 @@ module tb_mux_bus;
   );
 
   // Test procedure: iterate patterns and selection values
+  // The golden reference (in[s*bus+:bus]) and self-checker run inline
+  // within this loop for each test vector.
   initial begin : test
     in = 0;
     s  = 0;

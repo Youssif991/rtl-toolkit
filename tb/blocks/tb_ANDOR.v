@@ -38,7 +38,7 @@ module tb_ANDOR;
       .F(F)
   );
 
-  // Golden reference
+  // Golden reference: compute F = C | (A & B)
   always @(*) begin : reference
     expected_F = C | (A & B);
   end

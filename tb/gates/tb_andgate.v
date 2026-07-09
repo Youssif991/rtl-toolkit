@@ -36,7 +36,7 @@ module tb_andgate;
       .C(C)
   );
 
-  // Golden reference
+  // Golden reference: compute the expected AND output
   always @(*) begin : reference
     expected_C = A & B;
   end

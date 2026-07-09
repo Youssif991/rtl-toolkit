@@ -43,7 +43,8 @@ module tb_Priority_Encoder;
       .out(out)
   );
 
-  // Golden reference: scan input buses, pick the last non-zero one
+  // Golden reference: scan input buses and pick the last non-zero one
+  // Mirrors the DUT's priority encoding logic for independent comparison.
   always @(*) begin : reference
     expected_out = 0;
     for (i = 0; i < inputs; i = i + 1) begin

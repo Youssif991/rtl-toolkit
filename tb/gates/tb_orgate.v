@@ -36,7 +36,7 @@ module tb_orgate;
       .C(C)
   );
 
-  // Golden reference
+  // Golden reference: compute the expected OR output
   always @(*) begin : reference
     expected_C = A | B;
   end
