@@ -6,7 +6,8 @@
 // Design Name: Shift Register
 // Module Name: shift_reg
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: N-bit shift register with configurable left/right shifting.
+//              Shifts on the rising edge of `clk` when `en` is high
 // 
 // Dependencies: 
 // 
@@ -18,14 +19,14 @@
 
 module shift_reg #(
     parameter N = 4,
-    localparam left = 0,
-    localparam right = 1
+    localparam left = 0, // Shift left parameter
+    localparam right = 1 // Shift right parameter
 ) (
     input d,
     input clk,
     input rstn,
-    input dir,
-    input en,
+    input dir, // input to decide the direction of shifting
+    input en, // enable 
     output reg [N - 1 : 0] out
 );
 
@@ -38,7 +39,7 @@ module shift_reg #(
           right: out <= {d, out[N-1 : 1]};
           default: out <= out;
         endcase
-      end else out <= out;
+      end else out <= out; // honestly this line does not really matter but I will leave it here and do not ask me why
     end
   end
 
