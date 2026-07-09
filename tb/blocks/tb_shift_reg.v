@@ -23,25 +23,23 @@ module tb_shift_reg;
 
   // Parameters
   localparam N = 4;
-  localparam left = 0;
+  localparam left  = 0;
   localparam right = 1;
 
-  // Inputs
-  reg d;
-  reg rstn;
-  reg dir;
-  reg clk;
-  reg en;
+  // DUT interface
+  reg d;                    // Serial data input
+  reg rstn;                 // Active-low asynchronous reset
+  reg dir;                  // Shift direction (left=0, right=1)
+  reg clk;                  // Clock
+  reg en;                   // Enable
+  wire [N - 1 : 0] out;     // Parallel output
 
-  // Outputs
-  wire [N - 1 : 0] out;
+  // Test infrastructure
+  integer i;                     // Loop counter
+  integer errors = 0;            // Mismatch counter
+  reg [N - 1 : 0] expected_out;  // Golden reference output
 
-  // Test Variables
-  integer i;
-  integer errors = 0;
-  reg [N - 1 : 0] expected_out;
-
-  // Module instantation
+  // Module instantiation
   shift_reg #(
       .N(N)
   ) dut (
@@ -53,18 +51,16 @@ module tb_shift_reg;
       .out(out)
   );
 
-  // Test procedure
+  // Golden reference
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_out <= 0;
     else begin
       if (en) begin
         case (dir)
-
           right: begin
             expected_out <= expected_out >> 1;
             expected_out[N-1] <= d;
           end
-
           left: begin
             expected_out <= expected_out << 1;
             expected_out[0] <= d;
@@ -75,64 +71,53 @@ module tb_shift_reg;
     end
   end
 
-  // Checker — negedge, after the posedge capture has settled
-  always @(negedge clk) begin : Checker
+  // Checker — compare at negedge, after posedge capture has settled
+  always @(negedge clk) begin : check
     if (rstn && (out !== expected_out)) begin
       errors = errors + 1;
-      $display("FAIL at time %0t: dir=%b en=%b d=%b | dut_out=%b expected_out=%b", $time, dir, en,
-               d, out, expected_out);
+      $display("FAIL at time %0t: dir=%b en=%b d=%b | dut_out=%b expected_out=%b",
+               $time, dir, en, d, out, expected_out);
     end
   end
 
-  // Clock generation
+  // Clock generation: free-running 20 ns period (50 MHz)
   initial begin : clock
     clk = 0;
-    forever #10 clk = ~clk;  // 20 ns period clock
+    forever #10 clk = ~clk;
   end
 
   // Test procedure
   initial begin : test
-    // initalize inputs
     rstn = 0;
-    en = 0;
-    dir = left;
-    d = 0;
+    en   = 0;
+    dir  = left;
+    d    = 0;
 
-    #12 rstn = 1;  // relase the reset
+    #12 rstn = 1;  // release the reset
 
+    // --- Directed test 1: shift left pattern (1 0 1 1) ---
     dir = left;
     en  = 1;
-    // Test a known pattern in shift left case (1 0 1 1)
-    @(negedge clk);
-    d = 1;
-    @(negedge clk);
-    d = 1;
-    @(negedge clk);
-    d = 0;
-    @(negedge clk);
-    d  = 1;
+    @(negedge clk); d = 1;
+    @(negedge clk); d = 1;
+    @(negedge clk); d = 0;
+    @(negedge clk); d = 1;
 
-    // Hold by disabling the enable
+    // --- Hold: disable enable, data should not shift ---
     en = 0;
-    @(negedge clk);
-    d = 1;
-    @(negedge clk);
-    d   = 0;
+    @(negedge clk); d = 1;
+    @(negedge clk); d = 0;
 
-    // Test a known pattern in shift right case (1 1 0 1)
+    // --- Directed test 2: shift right pattern (1 1 0 1) ---
     en  = 1;
     dir = right;
-    @(negedge clk);
-    d = 1;
-    @(negedge clk);
-    d = 1;
-    @(negedge clk);
-    d = 0;
-    @(negedge clk);
-    d = 1;
+    @(negedge clk); d = 1;
+    @(negedge clk); d = 1;
+    @(negedge clk); d = 0;
+    @(negedge clk); d = 1;
 
-    // Applying random tests
-    for (i = 0; i < 20; i = i + 1) begin : random_tests
+    // --- Random stimulus ---
+    for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       d   = $random;
       en  = $random;
@@ -141,27 +126,22 @@ module tb_shift_reg;
 
     #20;
 
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
-
   end
 
-  // Live monitor 
-  initial begin : live_monitor
-    $monitor("Time=%0t | rstn=%b en=%b dir=%b d=%b | dut_out=%b expected_out=%b", $time, rstn, en,
-             dir, d, out, expected_out);
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | rstn=%b en=%b dir=%b d=%b | dut_out=%b expected_out=%b",
+             $time, rstn, en, dir, d, out, expected_out);
   end
 
-  // Vcd dump
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_shift_reg.vcd");
     $dumpvars(0, tb_shift_reg);
   end
-
 
 endmodule

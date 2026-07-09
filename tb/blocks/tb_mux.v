@@ -19,14 +19,17 @@
 
 module tb_mux;
 
+  // Parameters
   localparam width = 4;
   localparam selection = $clog2(width);
 
-  reg [width - 1:0] in;
-  reg [selection - 1 : 0] s;
-  wire out;
-  integer i;
+  // DUT interface
+  reg [width - 1 : 0] in;             // Input vector
+  reg [selection - 1 : 0] s;          // Select index
+  wire out;                            // Output: in[s]
+  integer i;                           // Loop counter
 
+  // Module instantiation
   mux #(
       .width(width),
       .selection(selection)
@@ -36,8 +39,8 @@ module tb_mux;
       .out(out)
   );
 
-  initial begin
-
+  // Test procedure: exhaustively iterate all (in, s) combinations
+  initial begin : test
     in = 0;
     s  = 0;
 
@@ -49,9 +52,9 @@ module tb_mux;
     end
 
     $finish;
-
   end
 
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_mux.vcd");
     $dumpvars(0, tb_mux);

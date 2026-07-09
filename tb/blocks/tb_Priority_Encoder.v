@@ -20,18 +20,18 @@
 
 module tb_Priority_Encoder;
 
-  // Paramters
+  // Parameters
   localparam inputs = 4;
   localparam bus = 8;
 
-  // Inputs
-  reg [inputs * bus - 1 : 0] in;
+  // DUT interface
+  reg [inputs * bus - 1 : 0] in;  // Concatenated input buses
+  wire [bus - 1 : 0] out;          // Selected output bus
 
-  // Output
-  wire [bus - 1 : 0] out;
+  // Test infrastructure
+  integer i;                       // Loop counter
 
-  integer i;  // Loop variable
-  // Instantiate the Design Under Test (DUT)
+  // Module instantiation
   Priority_Encoder #(
       .inputs(inputs),
       .bus(bus)
@@ -40,34 +40,29 @@ module tb_Priority_Encoder;
       .out(out)
   );
 
-  initial begin
-
+  // Test procedure: directed cases + random stimulus
+  initial begin : test
     $monitor("Time: %0t | Input Vector: %h | Selected Output: %h", $time, in, out);
-    
-    // Case 1: All channels are completely empty (Output should be 0)
-    in = 32'h00_00_00_00;
-    #10;
 
-    // Case 2: Only Channel 0 has data (Output should be 8'hAA)
-    in = 32'h00_00_00_AA;
-    #10;
+    // Case 1: All channels empty (output should be 0)
+    in = 32'h00_00_00_00; #10;
 
-    // Case 3: Only Channel 2 has data (Output should be 8'hBB)
-    in = 32'h00_BB_00_00;
-    #10;
+    // Case 2: Only Channel 0 has data (output should be 8'hAA)
+    in = 32'h00_00_00_AA; #10;
 
-    // Case 4: PRIORITY TEST! Both Channel 1 and Channel 3 are active.
-    in = 32'hDD_00_CC_00;
-    #10;
+    // Case 3: Only Channel 2 has data (output should be 8'hBB)
+    in = 32'h00_BB_00_00; #10;
 
-    // Case 5: Fill everything with random data to check stability
-    in = $random;
-    #10;
+    // Case 4: Both Channel 1 and Channel 3 active — later channel wins
+    in = 32'hDD_00_CC_00; #10;
+
+    // Case 5: Random data to check stability
+    in = $random; #10;
 
     $finish;
-
   end
 
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_Priority_Encoder.vcd");
     $dumpvars(0, tb_Priority_Encoder);

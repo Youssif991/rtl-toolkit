@@ -24,18 +24,16 @@ module tb_ripple_ctr;
   // Parameters
   localparam N = 4;
 
-  // Inputs
-  reg clk;
-  reg rstn;
+  // DUT interface
+  reg clk;               // Clock
+  reg rstn;              // Active-low asynchronous reset
+  wire [N - 1 : 0] out;  // Counter output
 
-  // Outputs
-  wire [N - 1 : 0] out;
+  // Test infrastructure
+  integer errors = 0;            // Mismatch counter
+  reg [N - 1 : 0] expected_out;  // Golden reference output
 
-  // Test variables
-  integer errors = 0;
-  reg [N - 1 : 0] expected_out;
-
-  // Module instantation
+  // Module instantiation
   ripple_ctr #(
       .N(N)
   ) dut (
@@ -45,31 +43,28 @@ module tb_ripple_ctr;
   );
 
   // Golden reference
-  always @(posedge clk or negedge rstn) begin
+  always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_out <= 0;
     else expected_out <= expected_out + 1;
   end
 
-  // Check the dut against the golden reference
-  always @(negedge clk) begin : check_model  // check at negedge, after posedge settled
+  // Checker — compare at negedge, after posedge capture has settled
+  always @(negedge clk) begin : check
     if (rstn && (out !== expected_out)) begin
       errors = errors + 1;
       $display("FAIL at time %0t : dut_out=%b expected_out=%b", $time, out, expected_out);
     end
   end
 
-  // Clock generation
-  initial begin : Clock
+  // Clock generation: free-running 20 ns period (50 MHz)
+  initial begin : clock
     clk = 0;
-    forever #10 clk = ~clk;  // 20 ns period clock
+    forever #10 clk = ~clk;
   end
 
   // Test procedure
-  initial begin : Test
-
-    // Initialize inputs
+  initial begin : test
     rstn = 0;
-
 
     #12 rstn = 1;  // release the reset
 
@@ -77,26 +72,21 @@ module tb_ripple_ctr;
 
     #20;
 
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
-
   end
 
-  // Monitoring the output
-  initial begin : live_monitor
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
     $monitor("Time=%0t | rstn=%b | dut_out=%b | expected_out=%b", $time, rstn, out, expected_out);
   end
 
-  // VCD dump
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_ripple_ctr.vcd");
     $dumpvars(0, tb_ripple_ctr);
   end
-
 
 endmodule

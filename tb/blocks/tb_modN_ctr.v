@@ -21,21 +21,19 @@
 module tb_modN_ctr;
 
   // Parameters
-  localparam N = 10;  // Modulus of the counter
+  localparam N = 10;           // Modulus of the counter
   localparam WIDTH = $clog2(N);  // Width of the counter based on N
 
-  // Inputs
-  reg clk;
-  reg rstn;
+  // DUT interface
+  reg clk;                          // Clock
+  reg rstn;                         // Active-low asynchronous reset
+  wire [WIDTH - 1 : 0] count;       // Counter output
 
-  // Outputs
-  wire [WIDTH-1:0] count;
+  // Test infrastructure
+  reg [WIDTH - 1 : 0] expected_count;  // Golden reference output
+  integer errors = 0;                   // Mismatch counter
 
-  // Golden reference model
-  reg [WIDTH-1:0] expected_count;
-  integer errors = 0;
-
-  // Instantiate the modN_ctr module
+  // Module instantiation
   modN_ctr #(
       .N(N),
       .WIDTH(WIDTH)
@@ -45,35 +43,35 @@ module tb_modN_ctr;
       .count(count)
   );
 
-  // Clock generation
-  initial begin : Clock_Generation
+  // Clock generation: free-running 20 ns period (50 MHz)
+  initial begin : clock
     clk = 0;
-    forever #10 clk = ~clk;  // 20ns period
+    forever #10 clk = ~clk;
   end
 
-  // Golden reference model — mirrors the expected mod-N counting behavior
-  always @(posedge clk or negedge rstn) begin : Reference_Model
+  // Golden reference — mirrors the expected mod-N counting behavior
+  always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_count <= 0;
     else if (expected_count == N - 1) expected_count <= 0;
     else expected_count <= expected_count + 1;
   end
 
-  // Self-checker — compares DUT against reference model
-  always @(negedge clk) begin : Checker
+  // Checker — compares DUT against reference on negedge
+  always @(negedge clk) begin : check
     if (rstn && (count !== expected_count)) begin
       errors = errors + 1;
       $display("FAIL at time %0t: dut_count=%0d expected_count=%0d", $time, count, expected_count);
     end
   end
 
-  // Testbench procedure
-  initial begin : Testbench_Procedure
+  // Test procedure
+  initial begin : test
     rstn = 0;
 
-    #15 rstn = 1;  // release reset mid-cycle, avoids landing exactly on a clock edge
+    #15 rstn = 1;  // release reset mid-cycle
 
-    // Run long enough to see multiple full wraparounds of the counter
-    repeat (N * 3) @(posedge clk);  // wait for 3 full cycles of the counter
+    // Run long enough to see multiple full wraparounds
+    repeat (N * 3) @(posedge clk);
 
     #20;
 
@@ -83,15 +81,16 @@ module tb_modN_ctr;
     $finish;
   end
 
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | rstn=%b | dut_count=%0d expected_count=%0d",
+             $time, rstn, count, expected_count);
+  end
+
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_modN_ctr.vcd");
     $dumpvars(0, tb_modN_ctr);
-  end
-
-  // Live monitor
-  initial begin : Monitor_Outputs
-    $monitor("Time=%0t | rstn=%b | dut_count=%0d expected_count=%0d", $time, rstn, count,
-             expected_count);
   end
 
 endmodule

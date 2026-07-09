@@ -21,19 +21,18 @@
 module tb_seven_seg;
 
   // Parameter
-  localparam active_low = 0;
-  // Inputs
-  reg [3 : 0] in;
+  localparam active_low = 0;  // 0 = active-high segments, 1 = active-low
 
-  // Outputs
-  wire [6 : 0] out;
+  // DUT interface
+  reg  [3 : 0] in;    // BCD input
+  wire [6 : 0] out;   // 7-segment pattern
 
-  // Test variables
-  integer i;
-  integer errors = 0;
-  reg [6 : 0] expected_out;
+  // Test infrastructure
+  integer i;               // Loop counter
+  integer errors = 0;      // Mismatch counter
+  reg [6 : 0] expected_out;  // Golden reference output
 
-  // Module instantation
+  // Module instantiation
   seven_seg #(
       .active_low(active_low)
   ) dut (
@@ -46,7 +45,6 @@ module tb_seven_seg;
     reg [6 : 0] out_active_high;
 
     case (in)
-
       4'h0: out_active_high = 7'b1111110;  // display 0
       4'h1: out_active_high = 7'b0110000;  // display 1
       4'h2: out_active_high = 7'b1101101;  // display 2
@@ -57,17 +55,14 @@ module tb_seven_seg;
       4'h7: out_active_high = 7'b1110000;  // display 7
       4'h8: out_active_high = 7'b1111111;  // display 8
       4'h9: out_active_high = 7'b1111010;  // display 9
-      default:
-      out_active_high = 7'b0000000;  // the default display as long as there is no BCD input
-
+      default: out_active_high = 7'b0000000;
     endcase
 
     assign expected_out = active_low ? ~out_active_high : out_active_high;
-
   end
 
-  // Check the dut against the golden reference
-  always @(*) begin : check_model
+  // Checker
+  always @(*) begin : check
     #1;
     if (out !== expected_out) begin
       errors = errors + 1;
@@ -75,43 +70,37 @@ module tb_seven_seg;
     end
   end
 
-  //  Test procdeure
+  // Test procedure
   initial begin : test
-
-    // Initializing inputs
     in = 0;
 
-    for (i = 0; i < 10; i = i + 1) begin : input_cases  // assigning all possible input combintations
+    // All 10 BCD digits
+    for (i = 0; i < 10; i = i + 1) begin
       #10 in = i;
     end
 
-    for (i = 0; i < 20; i = i + 1) begin : random_cases  // stress test to test random inputs
+    // Random inputs — stress test
+    for (i = 0; i < 20; i = i + 1) begin
       #10 in = $random;
     end
 
     #20;
 
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
-
   end
 
-  // Monitoring the output
-  initial begin : live_monitor
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
     $monitor("Time=%0t | dut_out=%b | expected_out=%b", $time, out, expected_out);
   end
 
-  // VCD dump
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_seven_seg.vcd");
     $dumpvars(0, tb_seven_seg);
   end
-
-
 
 endmodule

@@ -19,26 +19,21 @@
 
 module tb_jk_ff;
 
+  // DUT interface
+  reg j;     // Set input
+  reg k;     // Reset input
+  reg clk;   // Clock
+  reg rstn;  // Active-low asynchronous reset
+  wire q;     // Output
+  wire q_bar; // Complementary output
 
-  // Inputs
-  reg j;
-  reg k;
-  reg clk;
-  reg rstn;
+  // Test infrastructure
+  reg expected_q;       // Golden reference output
+  integer errors = 0;   // Mismatch counter
+  integer i;            // Loop counter
 
-
-  // Outputs
-  wire q;
-  wire q_bar;
-
-  // Reference model variables
-  reg expected_q;  // Reference model output for comparison
-  integer errors = 0;  // Counter for mismatches between DUT and reference model
-
-  // Loop variable for random stimulus generation
-  integer i;
-
-  jk_ff dut (  // instantiate the DUT (Design Under Test)
+  // Module instantiation
+  jk_ff dut (
       .j(j),
       .k(k),
       .clk(clk),
@@ -47,57 +42,53 @@ module tb_jk_ff;
       .q_bar(q_bar)
   );
 
-  // Clock
-  initial begin : clk_gen
+  // Clock generation: free-running 10 ns period (100 MHz)
+  initial begin : clock
     clk = 0;
     forever #5 clk = ~clk;
   end
 
-  // Reference model — golden behavior
-  always @(posedge clk or negedge rstn) begin : ref_model
+  // Golden reference
+  always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 0;
     else begin
-      case ({
-        j, k
-      })
-        2'b00: expected_q <= expected_q;
-        2'b01: expected_q <= 0;
-        2'b10: expected_q <= 1;
-        2'b11: expected_q <= ~expected_q;
+      case ({j, k})
+        2'b00: expected_q <= expected_q;  // hold
+        2'b01: expected_q <= 0;            // reset
+        2'b10: expected_q <= 1;            // set
+        2'b11: expected_q <= ~expected_q;   // toggle
       endcase
     end
   end
 
-  always @(negedge clk) begin : check_model  // check at negedge, after posedge settled
+  // Checker — compare at negedge, after posedge capture has settled
+  always @(negedge clk) begin : check
     if (rstn && (q !== expected_q)) begin
       errors = errors + 1;
       $display("FAIL at time %0t: j=%b k=%b | dut_q=%b expected_q=%b", $time, j, k, q, expected_q);
     end
   end
 
-  // Stimulus — directed tests first
-  initial begin : stimulus
+  // Test procedure
+  initial begin : test
     j = 0;
     k = 0;
     rstn = 0;
     #10 rstn = 1;
 
     @(negedge clk);
-    j = 0;
-    k = 0;  // hold
+    j = 0; k = 0;  // hold
     @(negedge clk);
-    j = 0;
-    k = 1;  // reset
+    j = 0; k = 1;  // reset
     @(negedge clk);
-    j = 1;
-    k = 0;  // set
+    j = 1; k = 0;  // set
     @(negedge clk);
-    j = 1;
-    k = 1;  // toggle
-    @(negedge clk);  // toggle again
+    j = 1; k = 1;  // toggle
+    @(negedge clk);
+                     // toggle again
 
     // Random stimulus — stress test
-    for (i = 0; i < 20; i = i + 1) begin : random_stimulus
+    for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       j = $random;
       k = $random;
@@ -105,20 +96,16 @@ module tb_jk_ff;
 
     #20;
 
-    // Final report
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
   end
 
-  // Live monitor 
-  initial begin : live_monitor
-    $monitor("Time=%0t | rstn=%b j=%b k=%b | dut_q=%b expected_q=%b", $time, rstn, j, k, q,
-             expected_q);
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | rstn=%b j=%b k=%b | dut_q=%b expected_q=%b",
+             $time, rstn, j, k, q, expected_q);
   end
 
 endmodule

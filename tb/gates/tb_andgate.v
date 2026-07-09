@@ -19,30 +19,31 @@
 
 module tb_andgate;
 
-  reg  A;
-  reg  B;
-  wire C;
+  // DUT interface
+  reg  A;  // Input A
+  reg  B;  // Input B
+  wire C;  // Output: A & B
 
+  // Module instantiation
   andgate dut (
       .A(A),
       .B(B),
       .C(C)
   );
 
-  initial begin
-
-    A = 0;
-    B = 0;
-    #10 A = 0;
-    B = 1;
-    #10 A = 1;
-    B = 0;
-    #10 A = 1;
-    B = 1;
-    #10 $finish;
+  // Test procedure: enumerate all input combinations
+  initial begin : test
+    A = 0; B = 0; #10;
+    A = 0; B = 1; #10;
+    A = 1; B = 0; #10;
+    A = 1; B = 1; #10;
+    $finish;
   end
+
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_andgate.vcd");
     $dumpvars(0, tb_andgate);
   end
+
 endmodule

@@ -19,11 +19,13 @@
 
 module tb_mux_2x1;
 
-  reg  D0;
-  reg  D1;
-  reg  S;
-  wire Y;
+  // DUT interface
+  reg  D0;  // Input 0
+  reg  D1;  // Input 1
+  reg  S;   // Select
+  wire Y;   // Output: S ? D1 : D0
 
+  // Module instantiation
   mux_2x1 dut (
       .D0(D0),
       .D1(D1),
@@ -31,35 +33,20 @@ module tb_mux_2x1;
       .Y (Y)
   );
 
-  initial begin
-
-    D0 = 0;
-    D1 = 0;
-    S  = 0;
-    #10 D0 = 0;
-    D1 = 0;
-    S  = 1;
-    #10 D0 = 0;
-    D1 = 1;
-    S  = 0;
-    #10 D0 = 0;
-    D1 = 1;
-    S  = 1;
-    #10 D0 = 1;
-    D1 = 0;
-    S  = 0;
-    #10 D0 = 1;
-    D1 = 0;
-    S  = 1;
-    #10 D0 = 1;
-    D1 = 1;
-    S  = 0;
-    #10 D0 = 1;
-    D1 = 1;
-    S  = 1;
-    #10 $finish;
+  // Test procedure: enumerate all input combinations
+  initial begin : test
+    D0 = 0; D1 = 0; S = 0; #10;
+    D0 = 0; D1 = 0; S = 1; #10;
+    D0 = 0; D1 = 1; S = 0; #10;
+    D0 = 0; D1 = 1; S = 1; #10;
+    D0 = 1; D1 = 0; S = 0; #10;
+    D0 = 1; D1 = 0; S = 1; #10;
+    D0 = 1; D1 = 1; S = 0; #10;
+    D0 = 1; D1 = 1; S = 1; #10;
+    $finish;
   end
 
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_mux_2x1.vcd");
     $dumpvars(0, tb_mux_2x1);

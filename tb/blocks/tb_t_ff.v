@@ -20,20 +20,18 @@
 
 module tb_t_ff;
 
-  // Inputs
-  reg t;
-  reg clk;
-  reg rstn;
+  // DUT interface
+  reg t;     // Toggle input
+  reg clk;   // Clock
+  reg rstn;  // Active-low asynchronous reset
+  wire q;    // Output
 
-  // Outputs
-  wire q;
+  // Test infrastructure
+  integer i;              // Loop counter
+  integer errors = 0;     // Mismatch counter
+  reg expected_q;         // Golden reference output
 
-  // Test variables
-  integer i;
-  integer errors = 0;
-  reg expected_q;
-
-  // Todule inistintation
+  // Module instantiation
   t_ff dut (
       .t(t),
       .clk(clk),
@@ -41,30 +39,29 @@ module tb_t_ff;
       .q(q)
   );
 
-  // Golden Reference
-  always @(posedge clk or negedge rstn) begin : Reference_Model
+  // Golden reference
+  always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 1'b0;
     else if (t) expected_q <= ~expected_q;
   end
-  // Check the dut against the golden reference
-  always @(negedge clk) begin : check_model  // check at negedge, after posedge settled
+
+  // Checker — compare at negedge, after posedge capture has settled
+  always @(negedge clk) begin : check
     if (rstn && (q !== expected_q)) begin
       errors = errors + 1;
       $display("FAIL at time %0t: t=%b | dut_q=%b expected_q=%b", $time, t, q, expected_q);
     end
   end
 
-  // Clock generation
-  initial begin : Clock
+  // Clock generation: free-running 10 ns period (100 MHz)
+  initial begin : clock
     clk = 0;
-    forever #5 clk = ~clk;  // 10 ns period clock
+    forever #5 clk = ~clk;
   end
 
   // Test procedure
-  initial begin : Test_cases
-
-    // initialize the inputs
-    t = 0;
+  initial begin : test
+    t    = 0;
     rstn = 0;
 
     @(negedge clk);
@@ -76,31 +73,27 @@ module tb_t_ff;
     @(negedge clk);
     t = 1;  // toggle
     @(negedge clk);
-    t = 0;  // mantain
+    t = 0;  // hold
 
     // Random stimulus — stress test
-    for (i = 0; i < 20; i = i + 1) begin : random_stimulus
+    for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       t = $random;
     end
 
     #20;
 
-    // Final report
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
     $finish;
   end
 
-  // Live monitor 
-  initial begin : live_monitor
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
     $monitor("Time=%0t | rstn=%b t=%b | dut_q=%b expected_q=%b", $time, rstn, t, q, expected_q);
   end
 
-  // Vcd dump
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_t_ff.vcd");
     $dumpvars(0, tb_t_ff);

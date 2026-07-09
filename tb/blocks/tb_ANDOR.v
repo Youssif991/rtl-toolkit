@@ -19,11 +19,13 @@
 
 module tb_ANDOR;
 
-  reg  A;
-  reg  B;
-  reg  C;
-  wire F;
+  // DUT interface
+  reg  A;  // Input A
+  reg  B;  // Input B
+  reg  C;  // Input C
+  wire F;  // Output: C | (A & B)
 
+  // Module instantiation
   ANDOR dut (
       .A(A),
       .B(B),
@@ -31,36 +33,20 @@ module tb_ANDOR;
       .F(F)
   );
 
-  initial begin
-
-    A = 0;
-    B = 0;
-    C = 0;
-    #10 A = 0;
-    B = 0;
-    C = 1;
-    #10 A = 0;
-    B = 1;
-    C = 0;
-    #10 A = 0;
-    B = 1;
-    C = 1;
-    #10 A = 1;
-    B = 0;
-    C = 0;
-    #10 A = 1;
-    B = 0;
-    C = 1;
-    #10 A = 1;
-    B = 1;
-    C = 0;
-    #10 A = 1;
-    B = 1;
-    C = 1;
-    #10 $finish;
-
+  // Test procedure: enumerate all input combinations
+  initial begin : test
+    A = 0; B = 0; C = 0; #10;
+    A = 0; B = 0; C = 1; #10;
+    A = 0; B = 1; C = 0; #10;
+    A = 0; B = 1; C = 1; #10;
+    A = 1; B = 0; C = 0; #10;
+    A = 1; B = 0; C = 1; #10;
+    A = 1; B = 1; C = 0; #10;
+    A = 1; B = 1; C = 1; #10;
+    $finish;
   end
 
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_ANDOR.vcd");
     $dumpvars(0, tb_ANDOR);

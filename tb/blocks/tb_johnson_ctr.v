@@ -24,21 +24,19 @@ module tb_johnson_ctr;
   // Parameters
   localparam N = 4;
 
-  // Inputs
-  reg clk;
-  reg rstn;
+  // DUT interface
+  reg clk;               // Clock
+  reg rstn;              // Active-low asynchronous reset
+  wire [N - 1 : 0] out;  // Johnson counter output
 
-  // Outputs
-  wire [N - 1 : 0] out;
+  // Test infrastructure
+  integer i;                      // Loop counter
+  integer errors = 0;             // Mismatch counter
+  integer diff_count;             // Number of bits that changed
+  reg [N - 1 : 0] prev_out;       // Previous output value
+  reg have_prev;                  // Whether a previous value exists
 
-  // Test variables
-  integer i;
-  integer errors = 0;
-  integer diff_count;
-  reg [N - 1 : 0] prev_out;
-  reg have_prev;
-
-  // Module instantation
+  // Module instantiation
   johnson_ctr #(
       .N(N)
   ) dut (
@@ -47,8 +45,8 @@ module tb_johnson_ctr;
       .out (out)
   );
 
-  // Golden reference
-  always @(posedge clk) begin : Reference
+  // Golden reference: verify exactly one bit changes per cycle
+  always @(posedge clk) begin : reference
     if (rstn) begin
       if (have_prev) begin
         diff_count = 0;
@@ -71,16 +69,14 @@ module tb_johnson_ctr;
     end
   end
 
-  // Clock generation
-  initial begin : Clock
+  // Clock generation: free-running 20 ns period (50 MHz)
+  initial begin : clock
     clk = 0;
-    forever #10 clk = ~clk;  // 20 ns period clock
+    forever #10 clk = ~clk;
   end
 
   // Test procedure
-  initial begin : Test
-
-    // Initialize the inputs
+  initial begin : test
     rstn = 0;
 
     #12 rstn = 1;  // release the reset
@@ -89,22 +85,18 @@ module tb_johnson_ctr;
 
     #20;
 
-    if (errors == 0) begin : report_pass
-      $display(" TEST PASSED — all checks matched");
-    end else begin : report_fail
-      $display(" TEST FAILED — %0d mismatches found", errors);
-    end
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
-
   end
 
-  // Monitoring the output
-  initial begin : live_monitor
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
     $monitor("Time=%0t | rstn=%b | dut_out=%b", $time, rstn, out);
   end
 
-  // VCD dump
+  // VCD dump for waveform debugging
   initial begin
     $dumpfile("tb_johnson_ctr.vcd");
     $dumpvars(0, tb_johnson_ctr);
