@@ -6,8 +6,9 @@
 // Design Name: 2-to-1 Multiplexer Testbench
 // Module Name: tb_mux_2x1
 // Tool Versions: Vivado 2025.2
-// Description: Applies all combinations of D0, D1 and S to verify
-//              the behavior of `mux_2x1` and prints results.
+// Description: Self-checking testbench for the `mux_2x1` module. Uses a
+//              golden reference model (S ? D1 : D0) compared against the
+//              DUT on every input change. Enumerates all combinations.
 // 
 // Dependencies: mux_2x1 (src/blocks/mux_2x1.v)
 // 
@@ -20,10 +21,14 @@
 module tb_mux_2x1;
 
   // DUT interface
-  reg  D0;  // Input 0
-  reg  D1;  // Input 1
-  reg  S;   // Select
-  wire Y;   // Output: S ? D1 : D0
+  reg  D0;           // Input 0
+  reg  D1;           // Input 1
+  reg  S;            // Select
+  wire Y;            // Output: S ? D1 : D0
+
+  // Test infrastructure
+  reg expected_Y;    // Golden reference output
+  integer errors = 0;  // Mismatch counter
 
   // Module instantiation
   mux_2x1 dut (
@@ -32,6 +37,20 @@ module tb_mux_2x1;
       .S (S),
       .Y (Y)
   );
+
+  // Golden reference
+  always @(*) begin : reference
+    expected_Y = S ? D1 : D0;
+  end
+
+  // Checker
+  always @(*) begin : check
+    #1;
+    if (Y !== expected_Y) begin
+      errors = errors + 1;
+      $display("FAIL at time %0t: D0=%b D1=%b S=%b | dut=%b expected=%b", $time, D0, D1, S, Y, expected_Y);
+    end
+  end
 
   // Test procedure: enumerate all input combinations
   initial begin : test
@@ -43,7 +62,15 @@ module tb_mux_2x1;
     D0 = 1; D1 = 0; S = 1; #10;
     D0 = 1; D1 = 1; S = 0; #10;
     D0 = 1; D1 = 1; S = 1; #10;
+    #10;
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
     $finish;
+  end
+
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | D0=%b D1=%b S=%b | dut_out=%b expected=%b", $time, D0, D1, S, Y, expected_Y);
   end
 
   // VCD dump for waveform debugging

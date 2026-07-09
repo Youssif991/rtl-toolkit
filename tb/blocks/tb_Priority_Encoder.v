@@ -6,9 +6,10 @@
 // Design Name: Priority Encoder Testbench
 // Module Name: tb_Priority_Encoder
 // Tool Versions: Vivado 2025.2
-// Description: Provides directed and random stimulus to the
-//              `Priority_Encoder` to verify selection and priority
-//              behavior under various input conditions.
+// Description: Self-checking testbench for the `Priority_Encoder` module.
+//              Uses a golden reference model that mirrors the scan-and-pick
+//              priority logic. Covers empty, single-channel, multi-channel
+//              priority, and random stimulus cases.
 // 
 // Dependencies: Priority_Encoder (src/blocks/Priority_Encoder.v)
 // 
@@ -30,6 +31,8 @@ module tb_Priority_Encoder;
 
   // Test infrastructure
   integer i;                       // Loop counter
+  reg [bus - 1 : 0] expected_out;  // Golden reference output
+  integer errors = 0;              // Mismatch counter
 
   // Module instantiation
   Priority_Encoder #(
@@ -40,25 +43,42 @@ module tb_Priority_Encoder;
       .out(out)
   );
 
+  // Golden reference: scan input buses, pick the last non-zero one
+  always @(*) begin : reference
+    expected_out = 0;
+    for (i = 0; i < inputs; i = i + 1) begin
+      if (in[i*bus+:bus] != 0) expected_out = in[i*bus+:bus];
+    end
+  end
+
   // Test procedure: directed cases + random stimulus
   initial begin : test
-    $monitor("Time: %0t | Input Vector: %h | Selected Output: %h", $time, in, out);
+    $monitor("Time: %0t | Input Vector: %h | Selected Output: %h | expected: %h",
+             $time, in, out, expected_out);
 
     // Case 1: All channels empty (output should be 0)
     in = 32'h00_00_00_00; #10;
+    if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 1"); end
 
     // Case 2: Only Channel 0 has data (output should be 8'hAA)
     in = 32'h00_00_00_AA; #10;
+    if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 2"); end
 
     // Case 3: Only Channel 2 has data (output should be 8'hBB)
     in = 32'h00_BB_00_00; #10;
+    if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 3"); end
 
     // Case 4: Both Channel 1 and Channel 3 active — later channel wins
     in = 32'hDD_00_CC_00; #10;
+    if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 4"); end
 
     // Case 5: Random data to check stability
     in = $random; #10;
+    if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 5"); end
 
+    #10;
+    if (errors == 0) $display("TEST PASSED — all checks matched");
+    else $display("TEST FAILED — %0d mismatches found", errors);
     $finish;
   end
 

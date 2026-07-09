@@ -6,8 +6,9 @@
 // Design Name: Indexed Multiplexer Testbench
 // Module Name: tb_mux
 // Tool Versions: Vivado 2025.2
-// Description: Exhaustively tests the `mux` module by iterating input
-//              vectors and selection indices, monitoring `out` for each.
+// Description: Self-checking testbench for the `mux` module. Uses a
+//              golden reference model (in[s]) and a self-checker to
+//              verify correctness across all input/select combinations.
 // 
 // Dependencies: mux (src/blocks/mux.v)
 // 
@@ -27,7 +28,11 @@ module tb_mux;
   reg [width - 1 : 0] in;             // Input vector
   reg [selection - 1 : 0] s;          // Select index
   wire out;                            // Output: in[s]
+
+  // Test infrastructure
   integer i;                           // Loop counter
+  reg expected_out;                    // Golden reference output
+  integer errors = 0;                  // Mismatch counter
 
   // Module instantiation
   mux #(
@@ -44,13 +49,23 @@ module tb_mux;
     in = 0;
     s  = 0;
 
-    $monitor("in=%0b s=%0b out=%0b", in, s, out);
+    $monitor("in=%0b s=%0b out=%0b expected=%0b", in, s, out, expected_out);
 
     for (i = 0; i < (1 << (width + selection)); i = i + 1) begin
       {in, s} = i;
       #10;
+
+      // Self-check
+      expected_out = in[s];
+      if (out !== expected_out) begin
+        errors = errors + 1;
+        $display("FAIL at time %0t: in=%b s=%b | dut=%b expected=%b", $time, in, s, out, expected_out);
+      end
     end
 
+    #10;
+    if (errors == 0) $display("TEST PASSED — all checks matched");
+    else $display("TEST FAILED — %0d mismatches found", errors);
     $finish;
   end
 
