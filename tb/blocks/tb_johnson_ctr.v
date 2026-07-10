@@ -81,12 +81,15 @@ module tb_johnson_ctr;
 
   // Test procedure
   initial begin : test
+    // Assert reset, then release mid-cycle
     rstn = 0;
 
     #12 rstn = 1;  // release the reset
 
+    // Run long enough to observe multiple full Johnson sequences
     repeat ((1 << N) * 3) @(posedge clk);
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");

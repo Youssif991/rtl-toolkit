@@ -24,13 +24,13 @@ module tb_seven_seg;
   localparam active_low = 0;  // 0 = active-high segments, 1 = active-low
 
   // DUT interface
-  reg  [3 : 0] in;    // BCD input
+  reg  [3 : 0] in;   // BCD input
   wire [6 : 0] out;   // 7-segment pattern
 
   // Test infrastructure
-  integer i;               // Loop counter
-  integer errors = 0;      // Mismatch counter
-  reg [6 : 0] expected_out;  // Golden reference output
+  integer i;                // Loop counter
+  integer errors = 0;       // Mismatch counter
+  reg  [6 : 0] expected_out;  // Golden reference output
 
   // Module instantiation
   seven_seg #(
@@ -40,9 +40,10 @@ module tb_seven_seg;
       .out(out)
   );
 
-  // Golden reference: duplicate the BCD-to-7-segment decoding logic
-  // Maps each 4-bit BCD input to the corresponding 7-segment pattern.
-  // The active_low parameter inverts the output if needed.
+  // Golden reference
+  // Duplicates the BCD-to-7-segment decoding logic. Maps each 4-bit
+  // BCD input to the corresponding 7-segment pattern. The active_low
+  // parameter inverts the output if needed.
   always @(*) begin : reference
     reg [6 : 0] out_active_high;
 
@@ -60,32 +61,35 @@ module tb_seven_seg;
       default: out_active_high = 7'b0000000;
     endcase
 
-    assign expected_out = active_low ? ~out_active_high : out_active_high;
+    expected_out = active_low ? ~out_active_high : out_active_high;
   end
 
-  // Checker
+  // Checker — compare after combo logic settles
   always @(*) begin : check
     #1;
     if (out !== expected_out) begin
       errors = errors + 1;
-      $display("FAIL at time %0t : dut_out=%b expected_out=%b", $time, out, expected_out);
+      $display("FAIL at time %0t: dut_out=%b expected_out=%b", $time, out, expected_out);
     end
   end
 
   // Test procedure
   initial begin : test
+    // Initialize inputs
     in = 0;
 
-    // All 10 BCD digits
+    // --- Directed test: all 10 BCD digits ---
     for (i = 0; i < 10; i = i + 1) begin
       #10 in = i;
     end
 
-    // Random inputs — stress test
+    // --- Random stimulus ---
+    // Stress-test the decoder with 20 random 4-bit values.
     for (i = 0; i < 20; i = i + 1) begin
       #10 in = $random;
     end
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");

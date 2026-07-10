@@ -21,29 +21,31 @@
 module tb_ANDOR;
 
   // DUT interface
-  reg  A;            // Input A
-  reg  B;            // Input B
-  reg  C;            // Input C
-  wire F;            // Output: C | (A & B)
+  reg  A;      // Input A
+  reg  B;      // Input B
+  reg  C;      // Input C
+  wire F;      // Output: C | (A & B)
 
   // Test infrastructure
-  reg expected_F;    // Golden reference output
-  integer errors = 0;  // Mismatch counter
+  reg     expected_F;  // Golden reference output
+  integer errors = 0;   // Mismatch counter
 
   // Module instantiation
   ANDOR dut (
-      .A(A),
-      .B(B),
-      .C(C),
-      .F(F)
+      .A (A),
+      .B (B),
+      .C (C),
+      .F (F)
   );
 
-  // Golden reference: compute F = C | (A & B)
+  // Golden reference model
+  // Computes the expected output as F = C | (A & B) and compares it
+  // against the DUT after a short #1 settle delay.
   always @(*) begin : reference
     expected_F = C | (A & B);
   end
 
-  // Checker
+  // Checker — compare after combo logic settles
   always @(*) begin : check
     #1;
     if (F !== expected_F) begin
@@ -52,7 +54,7 @@ module tb_ANDOR;
     end
   end
 
-  // Test procedure: enumerate all input combinations
+  // Test procedure: enumerate all 8 input combinations
   initial begin : test
     A = 0; B = 0; C = 0; #10;
     A = 0; B = 0; C = 1; #10;
@@ -62,9 +64,12 @@ module tb_ANDOR;
     A = 1; B = 0; C = 1; #10;
     A = 1; B = 1; C = 0; #10;
     A = 1; B = 1; C = 1; #10;
+
     #10;
+
     if (errors == 0) $display(" TEST PASSED — all checks matched");
     else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
   end
 

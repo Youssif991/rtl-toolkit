@@ -66,6 +66,7 @@ module tb_modN_ctr;
 
   // Test procedure
   initial begin : test
+    // Assert reset, then release mid-cycle
     rstn = 0;
 
     #15 rstn = 1;  // release reset mid-cycle
@@ -73,10 +74,11 @@ module tb_modN_ctr;
     // Run long enough to see multiple full wraparounds
     repeat (N * 3) @(posedge clk);
 
+    // Allow last transaction to settle, then report
     #20;
 
-    if (errors == 0) $display("TEST PASSED - all checks matched");
-    else $display("TEST FAILED - %0d mismatches found", errors);
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
   end

@@ -43,15 +43,18 @@ module tb_shift_reg;
   shift_reg #(
       .N(N)
   ) dut (
-      .d(d),
+      .d   (d),
       .rstn(rstn),
-      .dir(dir),
-      .clk(clk),
-      .en(en),
-      .out(out)
+      .dir (dir),
+      .clk (clk),
+      .en  (en),
+      .out (out)
   );
 
   // Golden reference
+  // Models a serial-in, parallel-out shift register. When `en` is high,
+  // shifts `expected_out` one position per clock cycle in the direction
+  // specified by `dir`, and loads `d` into the vacated bit position.
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_out <= 0;
     else begin
@@ -88,6 +91,7 @@ module tb_shift_reg;
 
   // Test procedure
   initial begin : test
+    // Drive all inputs low and assert reset
     rstn = 0;
     en   = 0;
     dir  = left;
@@ -117,6 +121,7 @@ module tb_shift_reg;
     @(negedge clk); d = 1;
 
     // --- Random stimulus ---
+    // Stress-test the shift register with 20 random control values.
     for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       d   = $random;
@@ -124,6 +129,7 @@ module tb_shift_reg;
       dir = $random;
     end
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");

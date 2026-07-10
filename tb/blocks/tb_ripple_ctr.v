@@ -43,6 +43,8 @@ module tb_ripple_ctr;
   );
 
   // Golden reference
+  // Models a simple binary up-counter: increments on each posedge,
+  // clears to 0 on async reset.
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_out <= 0;
     else expected_out <= expected_out + 1;
@@ -64,12 +66,15 @@ module tb_ripple_ctr;
 
   // Test procedure
   initial begin : test
+    // Assert reset, then release mid-cycle
     rstn = 0;
 
     #12 rstn = 1;  // release the reset
 
+    // Run long enough to observe multiple full-range counting cycles
     repeat ((1 << N) * 3) @(posedge clk);
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");

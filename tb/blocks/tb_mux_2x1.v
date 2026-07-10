@@ -21,14 +21,14 @@
 module tb_mux_2x1;
 
   // DUT interface
-  reg  D0;           // Input 0
-  reg  D1;           // Input 1
-  reg  S;            // Select
-  wire Y;            // Output: S ? D1 : D0
+  reg  D0;      // Input 0
+  reg  D1;      // Input 1
+  reg  S;       // Select
+  wire Y;       // Output: S ? D1 : D0
 
   // Test infrastructure
-  reg expected_Y;    // Golden reference output
-  integer errors = 0;  // Mismatch counter
+  reg     expected_Y;   // Golden reference output
+  integer errors = 0;   // Mismatch counter
 
   // Module instantiation
   mux_2x1 dut (
@@ -38,12 +38,13 @@ module tb_mux_2x1;
       .Y (Y)
   );
 
-  // Golden reference: compute Y = S ? D1 : D0
+  // Golden reference
+  // Computes the expected output as Y = S ? D1 : D0.
   always @(*) begin : reference
     expected_Y = S ? D1 : D0;
   end
 
-  // Checker
+  // Checker — compare after combo logic settles
   always @(*) begin : check
     #1;
     if (Y !== expected_Y) begin
@@ -52,7 +53,7 @@ module tb_mux_2x1;
     end
   end
 
-  // Test procedure: enumerate all input combinations
+  // Test procedure: enumerate all 8 input combinations
   initial begin : test
     D0 = 0; D1 = 0; S = 0; #10;
     D0 = 0; D1 = 0; S = 1; #10;
@@ -62,9 +63,12 @@ module tb_mux_2x1;
     D0 = 1; D1 = 0; S = 1; #10;
     D0 = 1; D1 = 1; S = 0; #10;
     D0 = 1; D1 = 1; S = 1; #10;
+
     #10;
+
     if (errors == 0) $display(" TEST PASSED — all checks matched");
     else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
   end
 

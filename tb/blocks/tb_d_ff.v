@@ -35,10 +35,10 @@ module tb_d_ff;
 
   // Module instantiation
   d_ff dut (
-      .d(d),
-      .clk(clk),
+      .d   (d),
+      .clk (clk),
       .rstn(rstn),
-      .q(q),
+      .q   (q),
       .q_bar(q_bar)
   );
 
@@ -49,6 +49,9 @@ module tb_d_ff;
   end
 
   // Golden reference
+  // On rising clock edge, captures `d` into `expected_q`; on negated
+  // reset, clears the output. Mirrors the DUT's behavior exactly.
+  always @(posedge clk or negedge rstn) begin : reference
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 1'b0;
     else expected_q = d;
@@ -64,12 +67,14 @@ module tb_d_ff;
 
   // Test procedure
   initial begin : test
-    d   = 0;
+    // Drive all inputs low and assert reset
+    d    = 0;
     rstn = 0;
 
     @(negedge clk);
     d = 1;  // input should not propagate while reset is active
 
+    // --- Directed test 1: release reset, capture 0 then 1 ---
     @(negedge clk);
     rstn = 1;  // release the reset
 
@@ -79,16 +84,19 @@ module tb_d_ff;
     @(negedge clk);
     d = 1;  // capture 1
 
-    // Random stimulus — stress test
+    // --- Random stimulus ---
+    // Stress-test the flip-flop with 20 random data values.
     for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       d = $random;
     end
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");
     else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
   end
 

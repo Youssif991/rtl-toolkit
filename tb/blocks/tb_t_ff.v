@@ -10,6 +10,7 @@
 //              reference model (toggle on t=1, hold on t=0, async reset)
 //              compared against the DUT on negedge clk. Covers directed
 //              reset/toggle/hold cases plus randomized stimulus.
+// 
 // Dependencies: t_ff (src/blocks/t_ff.v)
 // 
 // Revision:
@@ -33,13 +34,14 @@ module tb_t_ff;
 
   // Module instantiation
   t_ff dut (
-      .t(t),
-      .clk(clk),
+      .t   (t),
+      .clk (clk),
       .rstn(rstn),
-      .q(q)
+      .q   (q)
   );
 
   // Golden reference
+  // Toggles on t=1, holds on t=0, clears to 0 on async reset.
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 1'b0;
     else if (t) expected_q <= ~expected_q;
@@ -61,30 +63,37 @@ module tb_t_ff;
 
   // Test procedure
   initial begin : test
+    // Drive all inputs low and assert reset
     t    = 0;
     rstn = 0;
 
     @(negedge clk);
     t = 1;
 
+    // --- Directed test 1: release reset, then toggle ---
     @(negedge clk);
     rstn = 1;  // release the reset
 
     @(negedge clk);
     t = 1;  // toggle
+
+    // --- Directed test 2: hold (t=0) ---
     @(negedge clk);
     t = 0;  // hold
 
-    // Random stimulus — stress test
+    // --- Random stimulus ---
+    // Stress-test with 20 random toggle values.
     for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       t = $random;
     end
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");
     else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
   end
 

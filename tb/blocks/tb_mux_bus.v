@@ -50,19 +50,19 @@ module tb_mux_bus;
   // The golden reference (in[s*bus+:bus]) and self-checker run inline
   // within this loop for each test vector.
   initial begin : test
+    // Initialize inputs
     in = 0;
     s  = 0;
 
-    $monitor("Time: %0t | Selection: %b | Input: %b | Output: %b", $time, s, in, out);
-
     for (pattern = 0; pattern < 16; pattern = pattern + 1) begin
-      in = {4{pattern[3:0]}};  // same 4-bit pattern in all 4 slots
+      // Load the same 4-bit pattern into all 4 input slots
+      in = {4{pattern[3:0]}};
 
       for (sel_value = 0; sel_value < inputs; sel_value = sel_value + 1) begin
         s = sel_value;
         #10;
 
-        // Self-check: out should always equal the selected 4-bit pattern
+        // Golden reference: out should equal the selected 4-bit pattern
         if (out !== pattern[3:0]) begin
           errors = errors + 1;
           $display("FAIL at time %0t: s=%0d pattern=%0d | out=%b expected=%b",
@@ -71,12 +71,18 @@ module tb_mux_bus;
       end
     end
 
+    // Allow last transaction to settle, then report
     #10;
 
-    if (errors == 0) $display("TEST PASSED — all checks matched");
-    else $display("TEST FAILED — %0d mismatches found", errors);
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
 
     $finish;
+  end
+
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | s=%b in=%b | dut_out=%b", $time, s, in, out);
   end
 
   // VCD dump for waveform debugging

@@ -10,6 +10,7 @@
 //              golden reference model (JK truth table: hold, reset, set,
 //              toggle) compared against the DUT on negedge clk. Covers
 //              directed cases and randomized stimulus.
+// 
 // Dependencies: jk_ff (src/blocks/jk_ff.v)
 // 
 // Revision:
@@ -21,12 +22,12 @@
 module tb_jk_ff;
 
   // DUT interface
-  reg j;     // Set input
-  reg k;     // Reset input
-  reg clk;   // Clock
-  reg rstn;  // Active-low asynchronous reset
-  wire q;     // Output
-  wire q_bar; // Complementary output
+  reg  j;      // Set input
+  reg  k;      // Reset input
+  reg  clk;    // Clock
+  reg  rstn;   // Active-low asynchronous reset
+  wire q;      // Output
+  wire q_bar;  // Complementary output
 
   // Test infrastructure
   reg expected_q;       // Golden reference output
@@ -35,11 +36,11 @@ module tb_jk_ff;
 
   // Module instantiation
   jk_ff dut (
-      .j(j),
-      .k(k),
-      .clk(clk),
+      .j   (j),
+      .k   (k),
+      .clk (clk),
       .rstn(rstn),
-      .q(q),
+      .q   (q),
       .q_bar(q_bar)
   );
 
@@ -50,6 +51,9 @@ module tb_jk_ff;
   end
 
   // Golden reference
+  // Implements the JK flip-flop truth table:
+  //   00 = hold, 01 = reset, 10 = set, 11 = toggle
+  // On async reset, output is cleared to 0.
   always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 0;
     else begin
@@ -72,29 +76,41 @@ module tb_jk_ff;
 
   // Test procedure
   initial begin : test
-    j = 0;
-    k = 0;
+    // Drive all inputs low and assert reset
+    j    = 0;
+    k    = 0;
     rstn = 0;
+
     #10 rstn = 1;
 
+    // --- Directed test 1: hold (j=0, k=0) ---
     @(negedge clk);
-    j = 0; k = 0;  // hold
-    @(negedge clk);
-    j = 0; k = 1;  // reset
-    @(negedge clk);
-    j = 1; k = 0;  // set
-    @(negedge clk);
-    j = 1; k = 1;  // toggle
-    @(negedge clk);
-                     // toggle again
+    j = 0; k = 0;
 
-    // Random stimulus — stress test
+    // --- Directed test 2: reset (j=0, k=1) ---
+    @(negedge clk);
+    j = 0; k = 1;
+
+    // --- Directed test 3: set (j=1, k=0) ---
+    @(negedge clk);
+    j = 1; k = 0;
+
+    // --- Directed test 4: toggle (j=1, k=1) ---
+    @(negedge clk);
+    j = 1; k = 1;
+
+    // --- Directed test 5: toggle again ---
+    @(negedge clk);
+
+    // --- Random stimulus ---
+    // Stress-test the flip-flop with 20 random (j, k) pairs.
     for (i = 0; i < 20; i = i + 1) begin
       @(negedge clk);
       j = $random;
       k = $random;
     end
 
+    // Allow last transaction to settle, then report
     #20;
 
     if (errors == 0) $display(" TEST PASSED — all checks matched");
@@ -107,6 +123,12 @@ module tb_jk_ff;
   initial begin : monitor
     $monitor("Time=%0t | rstn=%b j=%b k=%b | dut_q=%b expected_q=%b",
              $time, rstn, j, k, q, expected_q);
+  end
+
+  // VCD dump for waveform debugging
+  initial begin
+    $dumpfile("tb_jk_ff.vcd");
+    $dumpvars(0, tb_jk_ff);
   end
 
 endmodule

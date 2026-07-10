@@ -54,33 +54,38 @@ module tb_Priority_Encoder;
 
   // Test procedure: directed cases + random stimulus
   initial begin : test
-    $monitor("Time: %0t | Input Vector: %h | Selected Output: %h | expected: %h",
-             $time, in, out, expected_out);
-
-    // Case 1: All channels empty (output should be 0)
+    // --- Directed test 1: all channels empty (output should be 0) ---
     in = 32'h00_00_00_00; #10;
     if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 1"); end
 
-    // Case 2: Only Channel 0 has data (output should be 8'hAA)
+    // --- Directed test 2: only Channel 0 has data (output = 8'hAA) ---
     in = 32'h00_00_00_AA; #10;
     if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 2"); end
 
-    // Case 3: Only Channel 2 has data (output should be 8'hBB)
+    // --- Directed test 3: only Channel 2 has data (output = 8'hBB) ---
     in = 32'h00_BB_00_00; #10;
     if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 3"); end
 
-    // Case 4: Both Channel 1 and Channel 3 active — later channel wins
+    // --- Directed test 4: Channel 1 and Channel 3 active (later wins) ---
     in = 32'hDD_00_CC_00; #10;
     if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 4"); end
 
-    // Case 5: Random data to check stability
+    // --- Directed test 5: random data to check stability ---
     in = $random; #10;
     if (out !== expected_out) begin errors = errors + 1; $display("FAIL case 5"); end
 
+    // Allow last transaction to settle, then report
     #10;
-    if (errors == 0) $display("TEST PASSED — all checks matched");
-    else $display("TEST FAILED — %0d mismatches found", errors);
+
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
+  end
+
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | in=%h | dut_out=%h expected_out=%h", $time, in, out, expected_out);
   end
 
   // VCD dump for waveform debugging

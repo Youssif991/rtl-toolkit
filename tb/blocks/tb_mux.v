@@ -48,17 +48,18 @@ module tb_mux;
   // The golden reference (expected_out = in[s]) and self-checker run
   // inline within this loop for each test vector.
   initial begin : test
+    // Initialize inputs
     in = 0;
     s  = 0;
-
-    $monitor("in=%0b s=%0b out=%0b expected=%0b", in, s, out, expected_out);
 
     for (i = 0; i < (1 << (width + selection)); i = i + 1) begin
       {in, s} = i;
       #10;
 
-      // Self-check
+      // Golden reference: out = in[s]
       expected_out = in[s];
+
+      // Self-check
       if (out !== expected_out) begin
         errors = errors + 1;
         $display("FAIL at time %0t: in=%b s=%b | dut=%b expected=%b", $time, in, s, out, expected_out);
@@ -66,9 +67,16 @@ module tb_mux;
     end
 
     #10;
-    if (errors == 0) $display("TEST PASSED — all checks matched");
-    else $display("TEST FAILED — %0d mismatches found", errors);
+
+    if (errors == 0) $display(" TEST PASSED — all checks matched");
+    else $display(" TEST FAILED — %0d mismatches found", errors);
+
     $finish;
+  end
+
+  // Live monitor: prints signal values on every change
+  initial begin : monitor
+    $monitor("Time=%0t | in=%b s=%b | dut_out=%b expected=%b", $time, in, s, out, expected_out);
   end
 
   // VCD dump for waveform debugging
