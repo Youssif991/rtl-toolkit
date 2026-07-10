@@ -52,9 +52,8 @@ module tb_d_ff;
   // On rising clock edge, captures `d` into `expected_q`; on negated
   // reset, clears the output. Mirrors the DUT's behavior exactly.
   always @(posedge clk or negedge rstn) begin : reference
-  always @(posedge clk or negedge rstn) begin : reference
     if (!rstn) expected_q <= 1'b0;
-    else expected_q = d;
+    else expected_q <= d;
   end
 
   // Checker — compare at negedge, after posedge capture has settled
