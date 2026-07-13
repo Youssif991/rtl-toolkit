@@ -19,10 +19,10 @@ digital design verification.
 
 ## Available modules
 
-| Category | Location | Contents |
-|---|---|---|
-| **Gates** | `src/gates/` | Primitive logic gates (AND, OR, NOT) |
-| **Blocks** | `src/blocks/` | Combinational and sequential modules — multiplexers, decoders, flip-flops, counters, shift registers, adders, and more |
+| Location | Contents |
+|---|---|
+| `src/` | All design modules — gates (AND, OR, NOT), multiplexers, decoders, flip-flops, counters, shift registers, adders, FSMs, and more |
+| `tb/` | Matching self-checking testbenches (`tb_<module>.v`) for every design module |
 
 ---
 
@@ -30,12 +30,8 @@ digital design verification.
 
 ```
 rtl-toolkit/
-├── src/
-│   ├── gates/          # Primitive gate modules
-│   └── blocks/         # Combinational and sequential modules
-├── tb/
-│   ├── gates/           # Testbenches for gates
-│   └── blocks/          # Testbenches for blocks
+├── src/                 # All design modules
+├── tb/                  # All testbenches (tb_<module>.v)
 ├── scripts/
 │   ├── run_sim.tcl      # Vivado batch simulation
 │   ├── elaborate.tcl    # Vivado RTL schematic elaboration
@@ -78,7 +74,7 @@ waveform viewer.
 
 ```bash
 # Full path to the testbench file
-make all TB_FILE=tb/blocks/tb_Full_Adder.v
+make all TB_FILE=tb/tb_Full_Adder.v
 
 # Or just the testbench name (auto-resolved)
 make all TB_FILE=tb_jk_ff
@@ -171,9 +167,8 @@ later.
 
 ## Adding a new module
 
-1. Add the design file to `src/gates/` or `src/blocks/`.
-2. Add a matching testbench to `tb/gates/` or `tb/blocks/`, named
-   `tb_<module_name>.v`.
+1. Add the design file to `src/`.
+2. Add a matching testbench to `tb/`, named `tb_<module_name>.v`.
 3. Follow the existing self-checking pattern — reference model, directed
    tests, random stimulus, `TEST PASSED` / `TEST FAILED` reporting.
 4. Push — CI picks up the new testbench automatically, no configuration
