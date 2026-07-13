@@ -21,25 +21,25 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module johnson_ctr #(
-    parameter Width = 4
+    parameter WIDTH = 4
 ) (
     input  wire             clk_i,
     input  wire             rst_n_i,
-    output wire [Width-1:0] out_o
+    output wire [WIDTH-1:0] out_o
 );
 
     // Registered Johnson state (current value)
-    reg [Width-1:0] state_q;
+    reg [WIDTH-1:0] state_q;
     // Next-state value (combinational)
-    reg [Width-1:0] state_d;
+    reg [WIDTH-1:0] state_d;
     integer i;
 
     // Combinational: Johnson (twisted-ring) next-state logic
     always @(*) begin
         // Complement of LSB feeds into MSB (twisted feedback)
-        state_d[Width-1] = ~state_q[0];
+        state_d[WIDTH-1] = ~state_q[0];
         // Shift all bits right by one position
-        for (i = 0; i < Width - 1; i = i + 1) begin : shift_loop
+        for (i = 0; i < WIDTH - 1; i = i + 1) begin : shift_loop
             state_d[i] = state_q[i+1];
         end
     end

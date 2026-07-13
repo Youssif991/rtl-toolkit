@@ -35,7 +35,7 @@ module tb_ripple_ctr;
 
     // Module instantiation
     ripple_ctr #(
-        .Width(N)
+        .WIDTH(N)
     ) dut (
         .clk_i (clk),
         .rst_n_i(rstn),

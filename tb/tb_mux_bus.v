@@ -37,9 +37,9 @@ module tb_mux_bus;
 
     // Module instantiation
     mux_bus #(
-        .BusWidth(bus),
-        .NumInputs(inputs),
-        .SelWidth(selection)
+        .BUS_WIDTH(bus),
+        .NUM_INPUTS(inputs),
+        .SEL_WIDTH(selection)
     ) uut (
         .in_i (in),
         .s_i  (s),

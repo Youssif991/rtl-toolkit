@@ -36,8 +36,8 @@ module tb_Priority_Encoder;
 
     // Module instantiation
     Priority_Encoder #(
-        .NumInputs(inputs),
-        .BusWidth(bus)
+        .NUM_INPUTS(inputs),
+        .BUS_WIDTH(bus)
     ) dut (
         .in_i (in),
         .out_o(out)

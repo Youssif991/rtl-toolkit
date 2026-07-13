@@ -21,17 +21,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module ripple_ctr #(
-    parameter Width = 4
+    parameter WIDTH = 4
 ) (
     input  wire             clk_i,
     input  wire             rst_n_i,
-    output wire [Width-1:0] out_o
+    output wire [WIDTH-1:0] out_o
 );
 
-    wire [Width-1:0] stage_q;
-    wire [Width-1:0] stage_q_bar;
+    wire [WIDTH-1:0] stage_q;
+    wire [WIDTH-1:0] stage_q_bar;
     // Clock chain: clk_chain[i] clocks stage i; each stage toggles the next
-    wire [  Width:0] clk_chain;
+    wire [    WIDTH:0] clk_chain;
 
     assign clk_chain[0] = clk_i;
 
@@ -39,7 +39,7 @@ module ripple_ctr #(
 
     // Generate: ripple stages, each clocked from the previous stage's q_bar
     generate
-        for (i = 0; i < Width; i = i + 1) begin : gen_ripple_stage
+        for (i = 0; i < WIDTH; i = i + 1) begin : gen_ripple_stage
             // Feed inverted output of this stage as the clock for the next stage
             assign clk_chain[i+1] = stage_q_bar[i];
             d_ff d_inst (

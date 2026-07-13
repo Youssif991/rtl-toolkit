@@ -19,16 +19,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module mux_bus #(
-    parameter BusWidth  = 4,
-    parameter NumInputs = 4,
-    parameter SelWidth  = $clog2(NumInputs)
+    parameter BUS_WIDTH  = 4,
+    parameter NUM_INPUTS = 4,
+    parameter SEL_WIDTH  = $clog2(NUM_INPUTS)
 ) (
-    input  [BusWidth * NumInputs - 1 : 0] in_i,
-    input  [            SelWidth - 1 : 0] s_i,
-    output [            BusWidth - 1 : 0] out_o
+    input  [BUS_WIDTH * NUM_INPUTS - 1 : 0] in_i,
+    input  [             SEL_WIDTH - 1 : 0] s_i,
+    output [             BUS_WIDTH - 1 : 0] out_o
 );
 
     // Indexed part-select: pick the bus at position s_i from the concatenated input vector.
-    assign out_o = in_i[s_i*BusWidth+:BusWidth];
+    assign out_o = in_i[s_i*BUS_WIDTH+:BUS_WIDTH];
 
 endmodule

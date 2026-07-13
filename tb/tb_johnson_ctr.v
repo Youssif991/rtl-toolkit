@@ -38,7 +38,7 @@ module tb_johnson_ctr;
 
     // Module instantiation
     johnson_ctr #(
-        .Width(N)
+        .WIDTH(N)
     ) dut (
         .clk_i (clk),
         .rst_n_i(rstn),

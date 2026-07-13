@@ -36,8 +36,8 @@ module tb_mux;
 
     // Module instantiation
     mux #(
-        .DataWidth(width),
-        .SelWidth(selection)
+        .DATA_WIDTH(width),
+        .SEL_WIDTH(selection)
     ) dut (
         .in_i (in),
         .s_i  (s),

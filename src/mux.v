@@ -18,11 +18,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module mux #(
-    parameter DataWidth = 4,
-    parameter SelWidth  = $clog2(DataWidth)
+    parameter DATA_WIDTH = 4,
+    parameter SEL_WIDTH  = $clog2(DATA_WIDTH)
 ) (
-    input [DataWidth - 1 : 0] in_i,
-    input [SelWidth - 1 : 0] s_i,
+    input [DATA_WIDTH - 1 : 0] in_i,
+    input [  SEL_WIDTH - 1 : 0] s_i,
     output out_o
 );
 

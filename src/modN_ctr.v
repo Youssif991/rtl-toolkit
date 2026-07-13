@@ -18,21 +18,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module modN_ctr #(
-    parameter Modulus = 10,
-    parameter Width   = $clog2(Modulus)
+    parameter MODULUS = 10,
+    parameter WIDTH   = $clog2(MODULUS)
 ) (
     input  wire             clk_i,
     input  wire             rst_n_i,
-    output wire [Width-1:0] count_o
+    output wire [WIDTH-1:0] count_o
 );
 
     // Registered counter value
-    reg  [Width-1:0] count_q;
-    // Next counter value (combinational, wraps at Modulus-1)
-    wire [Width-1:0] count_d;
+    reg  [WIDTH-1:0] count_q;
+    // Next counter value (combinational, wraps at MODULUS-1)
+    wire [WIDTH-1:0] count_d;
 
     // Combinational: modulo-N next-state logic
-    assign count_d = (count_q == Modulus - 1) ? 0 : count_q + 1;
+    assign count_d = (count_q == MODULUS - 1) ? 0 : count_q + 1;
 
     // Sequential: count register
     always @(posedge clk_i or negedge rst_n_i) begin

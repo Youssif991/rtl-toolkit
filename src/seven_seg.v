@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module seven_seg #(
-    parameter ActiveLow = 0
+    parameter ACTIVE_LOW = 0
 ) (
     input  [3 : 0] in_i,
     output [6 : 0] out_o
@@ -46,6 +46,6 @@ module seven_seg #(
     end
 
     // Apply polarity: invert when ActiveLow is set (for common-anode displays).
-    assign out_o = ActiveLow ? ~out_active_high : out_active_high;
+    assign out_o = ACTIVE_LOW ? ~out_active_high : out_active_high;
 
 endmodule

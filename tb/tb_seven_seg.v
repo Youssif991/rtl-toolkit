@@ -34,7 +34,7 @@ module tb_seven_seg;
 
     // Module instantiation
     seven_seg #(
-        .ActiveLow(active_low)
+        .ACTIVE_LOW(active_low)
     ) dut (
         .in_i (in),
         .out_o(out)

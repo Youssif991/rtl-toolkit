@@ -38,7 +38,7 @@ module tb_gray_ctr;
 
     // Module instantiation
     gray_ctr #(
-        .Width(N)
+        .WIDTH(N)
     ) dut (
         .clk_i (clk),
         .rst_n_i(rstn),

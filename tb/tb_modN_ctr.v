@@ -35,8 +35,8 @@ module tb_modN_ctr;
 
     // Module instantiation
     modN_ctr #(
-        .Modulus(N),
-        .Width(WIDTH)
+        .MODULUS(N),
+        .WIDTH(WIDTH)
     ) dut (
         .clk_i  (clk),
         .rst_n_i (rstn),
