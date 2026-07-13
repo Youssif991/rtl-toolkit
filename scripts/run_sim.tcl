@@ -35,7 +35,7 @@ puts " Target Testbench: $TOP_TB"
 
 # 1. Parse/Compile Verilog Files
 puts "--> 1. Parsing Verilog Files..."
-exec xvlog {*}[glob src/blocks/*.v] {*}[glob src/gates/*.v] $TB_FILE
+exec xvlog {*}[glob src/*.v] $TB_FILE
 
 # 2. Elaborate Design
 puts "--> 2. Elaborating Design..."
