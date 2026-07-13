@@ -6,13 +6,13 @@ TOP     = mux_bus
 # Safety Check: Only enforce TB_FILE if we are running the default simulation target
 ifeq ($(MAKECMDGOALS),)
     ifeq ($(strip $(TB_FILE)),)
-        $(error Error: You must specify a testbench file. Usage: make TB_FILE=tb/blocks/tb_Full_Adder.v)
+        $(error Error: You must specify a testbench file. Usage: make TB_FILE=tb/tb_Full_Adder.v)
     endif
 endif
 
 ifeq ($(MAKECMDGOALS),all)
     ifeq ($(strip $(TB_FILE)),)
-        $(error Error: You must specify a testbench file. Usage: make TB_FILE=tb/blocks/tb_Full_Adder.v)
+        $(error Error: You must specify a testbench file. Usage: make TB_FILE=tb/tb_Full_Adder.v)
     endif
 endif
 
