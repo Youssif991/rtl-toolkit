@@ -34,10 +34,10 @@ module tb_t_ff;
 
     // Module instantiation
     t_ff dut (
-        .t   (t),
-        .clk (clk),
-        .rstn(rstn),
-        .q   (q)
+        .t_i   (t),
+        .clk_i (clk),
+        .rst_n_i(rstn),
+        .q_o   (q)
     );
 
     // Golden reference

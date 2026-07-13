@@ -3,10 +3,10 @@
 // Engineer: Youssef
 //
 // Create Date: 06/26/2026 02:04:37 AM
-// Design Name:
+// Design Name: notgate
 // Module Name: notgate
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: Single-input NOT gate (inverter)
 //
 // Dependencies:
 //
@@ -17,8 +17,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module notgate (
-    input  A,
-    output B
+    input  A_i,
+    output B_o
 );
-    assign B = ~A;
+    // Invert the input: output is the logical complement of A
+    assign B_o = ~A_i;
 endmodule

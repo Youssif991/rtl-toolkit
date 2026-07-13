@@ -36,11 +36,11 @@ module tb_Priority_Encoder;
 
     // Module instantiation
     Priority_Encoder #(
-        .inputs(inputs),
-        .bus(bus)
+        .NumInputs(inputs),
+        .BusWidth(bus)
     ) dut (
-        .in (in),
-        .out(out)
+        .in_i (in),
+        .out_o(out)
     );
 
     // Golden reference: scan input buses and pick the last non-zero one

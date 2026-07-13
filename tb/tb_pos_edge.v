@@ -35,10 +35,10 @@ module tb_pos_edge;
 
     // Module instantiation
     pos_edge dut (
-        .sig (sig),
-        .clk (clk),
-        .rstn(rstn),
-        .out (out)
+        .sig_i (sig),
+        .clk_i (clk),
+        .rst_n_i(rstn),
+        .out_o (out)
     );
 
     // Golden reference model

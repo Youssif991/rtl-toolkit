@@ -3,7 +3,7 @@
 // Engineer: Youssef
 //
 // Create Date: 06/26/2026 02:19:24 AM
-// Design Name: ANDOR - This module implements the logic function F = C | (A & B).
+// Design Name: ANDOR
 // Module Name: ANDOR
 // Tool Versions: Vivado 2025.2
 // Description: Implements F = C | (A & B). Computes A & B then ORs
@@ -18,14 +18,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module ANDOR (
-    input  A,
-    input  B,
-    input  C,
-    output F
+    input  A_i,
+    input  B_i,
+    input  C_i,
+    output F_o
 );
 
-    wire AB;  // Intermediate: AND of A and B
-    assign AB = A & B;  // AB = 1 when both A and B are asserted
-    assign F  = C | AB;  // F = 1 when C is asserted OR (A & B) is asserted
+    // Intermediate result: bitwise AND of the A and B inputs.
+    wire AB;
+    // Compute final output: F = C | (A & B).
+    assign AB  = A_i & B_i;
+    assign F_o = C_i | AB;
 
 endmodule

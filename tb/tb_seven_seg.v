@@ -34,10 +34,10 @@ module tb_seven_seg;
 
     // Module instantiation
     seven_seg #(
-        .active_low(active_low)
+        .ActiveLow(active_low)
     ) dut (
-        .in (in),
-        .out(out)
+        .in_i (in),
+        .out_o(out)
     );
 
     // Golden reference

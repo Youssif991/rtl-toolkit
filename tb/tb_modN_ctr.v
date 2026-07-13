@@ -35,12 +35,12 @@ module tb_modN_ctr;
 
     // Module instantiation
     modN_ctr #(
-        .N(N),
-        .WIDTH(WIDTH)
+        .Modulus(N),
+        .Width(WIDTH)
     ) dut (
-        .clk  (clk),
-        .rstn (rstn),
-        .count(count)
+        .clk_i  (clk),
+        .rst_n_i (rstn),
+        .count_o(count)
     );
 
     // Clock generation: free-running 20 ns period (50 MHz)

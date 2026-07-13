@@ -31,9 +31,9 @@ module tb_andgate;
 
     // Module instantiation
     andgate dut (
-        .A(A),
-        .B(B),
-        .C(C)
+        .A_i(A),
+        .B_i(B),
+        .C_o(C)
     );
 
     // Golden reference: compute the expected AND output

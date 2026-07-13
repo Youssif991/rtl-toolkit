@@ -49,13 +49,13 @@ module tb_single_port_ram;
         .DEPTH     (DEPTH),
         .ADDR_WIDTH(ADDR_WIDTH)
     ) dut (
-        .clk          (clk),
-        .addr         (addr),
-        .data_in      (data_in),
-        .write_enable (write_enable),
-        .chip_select  (chip_select),
-        .output_enable(output_enable),
-        .data_out     (data_out)
+        .clk_i           (clk),
+        .addr_i          (addr),
+        .data_in_i       (data_in),
+        .write_enable_i  (write_enable),
+        .chip_select_i   (chip_select),
+        .output_enable_i (output_enable),
+        .data_out_o      (data_out)
     );
 
     // Golden reference model

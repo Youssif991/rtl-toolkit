@@ -36,12 +36,12 @@ module tb_jk_ff;
 
     // Module instantiation
     jk_ff dut (
-        .j   (j),
-        .k   (k),
-        .clk (clk),
-        .rstn(rstn),
-        .q   (q),
-        .q_bar(q_bar)
+        .j_i   (j),
+        .k_i   (k),
+        .clk_i (clk),
+        .rst_n_i(rstn),
+        .q_o   (q),
+        .q_bar_o(q_bar)
     );
 
     // Clock generation: free-running 10 ns period (100 MHz)

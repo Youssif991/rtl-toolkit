@@ -32,10 +32,10 @@ module tb_mux_2x1;
 
     // Module instantiation
     mux_2x1 dut (
-        .D0(D0),
-        .D1(D1),
-        .S (S),
-        .Y (Y)
+        .D0_i(D0),
+        .D1_i(D1),
+        .S_i (S),
+        .Y_o (Y)
     );
 
     // Golden reference

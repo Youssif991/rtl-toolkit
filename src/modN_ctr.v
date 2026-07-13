@@ -18,24 +18,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module modN_ctr #(
-    parameter N = 10,  // Modulus of the counter
-    parameter WIDTH = $clog2(N)  // Width of the counter based on N (Ceiling of log2(N))
+    parameter Modulus = 10,
+    parameter Width   = $clog2(Modulus)
 ) (
-    input clk,  // Clock input
-    input rstn,  // Active low reset
-    output reg [WIDTH-1:0] count  // Counter output
+    input  wire             clk_i,
+    input  wire             rst_n_i,
+    output wire [Width-1:0] count_o
 );
 
-    always @(posedge clk or negedge rstn) begin : Counter_Logic
-        if (!rstn) begin : Async_Reset  // Asynchronous reset
-            count <= 0;
+    // Registered counter value
+    reg  [Width-1:0] count_q;
+    // Next counter value (combinational, wraps at Modulus-1)
+    wire [Width-1:0] count_d;
+
+    // Combinational: modulo-N next-state logic
+    assign count_d = (count_q == Modulus - 1) ? 0 : count_q + 1;
+
+    // Sequential: count register
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            count_q <= 0;
         end else begin
-            if (count == N - 1) begin : Wrap_Around  // Wrap around when count reaches N-1
-                count <= 0;
-            end else begin : Increment  // Increment the counter
-                count <= count + 1;
-            end
+            count_q <= count_d;
         end
     end
+
+    assign count_o = count_q;
 
 endmodule

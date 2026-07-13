@@ -35,11 +35,11 @@ module tb_Full_Adder;
 
     // Module instantiation
     Full_Adder dut (
-        .A(A),
-        .B(B),
-        .Cin(Cin),
-        .Sum(Sum),
-        .Cout(Cout)
+        .A_i(A),
+        .B_i(B),
+        .Cin_i(Cin),
+        .Sum_o(Sum),
+        .Cout_o(Cout)
     );
 
     // Test procedure: exhaustively iterate all 8 input combinations

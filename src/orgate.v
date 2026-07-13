@@ -3,10 +3,10 @@
 // Engineer: Youssef
 //
 // Create Date: 06/26/2026 02:03:56 AM
-// Design Name:
+// Design Name: orgate
 // Module Name: orgate
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: 2-input OR gate
 //
 // Dependencies:
 //
@@ -17,9 +17,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module orgate (
-    input  A,
-    input  B,
-    output C
+    input  A_i,
+    input  B_i,
+    output C_o
 );
-    assign C = A | B;
+    // Drive output high when at least one input is asserted
+    assign C_o = A_i | B_i;
 endmodule

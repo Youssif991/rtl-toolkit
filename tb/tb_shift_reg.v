@@ -43,12 +43,12 @@ module tb_shift_reg;
     shift_reg #(
         .N(N)
     ) dut (
-        .d   (d),
-        .rstn(rstn),
-        .dir (dir),
-        .clk (clk),
-        .en  (en),
-        .out (out)
+        .d_i   (d),
+        .rst_n_i(rstn),
+        .dir_i (dir),
+        .clk_i (clk),
+        .en_i  (en),
+        .out_o (out)
     );
 
     // Golden reference

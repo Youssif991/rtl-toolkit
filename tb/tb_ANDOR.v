@@ -32,10 +32,10 @@ module tb_ANDOR;
 
     // Module instantiation
     ANDOR dut (
-        .A(A),
-        .B(B),
-        .C(C),
-        .F(F)
+        .A_i(A),
+        .B_i(B),
+        .C_i(C),
+        .F_o(F)
     );
 
     // Golden reference model

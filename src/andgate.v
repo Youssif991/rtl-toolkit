@@ -3,10 +3,10 @@
 // Engineer: Youssef
 //
 // Create Date: 06/26/2026 01:52:59 AM
-// Design Name:
+// Design Name: andgate
 // Module Name: andgate
 // Tool Versions: Vivado 2025.2
-// Description: Insert description here
+// Description: 2-input AND gate
 //
 // Dependencies:
 //
@@ -17,9 +17,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module andgate (
-    input  A,
-    input  B,
-    output C
+    input  A_i,
+    input  B_i,
+    output C_o
 );
-    assign C = A & B;
+    // Drive output high only when both inputs are asserted
+    assign C_o = A_i & B_i;
 endmodule

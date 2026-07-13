@@ -18,17 +18,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module t_ff (
-    input t,
-    input clk,
-    input rstn,
-    output reg q
+    input      clk_i,
+    input      rst_n_i,
+    input      t_i,
+    output reg q_o
 );
 
-    // Toggle `q` on rising clock edge when `t` is high; reset clears it
-    always @(posedge clk or negedge rstn) begin : t_ff_logic
-        if (!rstn) q <= 1'b0;
-        else if (t) q <= ~q;  // Toggle the output
-        // When t == 0, q retains its current value (implied latch)
+    // Sequential logic: toggle or hold on rising clock edge
+    //   - rst_n_i asserted: asynchronously clear q to 0
+    //   - t_i high:         invert q (toggle)
+    //   - t_i low:          q holds its previous value (implied storage)
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            q_o <= 1'b0;  // Asynchronous active-low reset
+        end else if (t_i) begin
+            q_o <= ~q_o;  // Toggle the output
+        end
+        // When t_i is low, q_o retains its current value (no assignment)
     end
 
 endmodule

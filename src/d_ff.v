@@ -19,19 +19,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module d_ff (
-    input d,
-    input clk,
-    input rstn,
-    output reg q,
-    output q_bar
+    input      clk_i,
+    input      rst_n_i,
+    input      d_i,
+    output reg q_o,
+    output     q_bar_o
 );
 
-    // On rising clock edge, capture `d`; on negated reset, clear `q`
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) q <= 1'b0;
-        else q <= d;
+    // Sequential logic: capture input on rising clock edge
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            q_o <= 1'b0;  // Asynchronous active-low reset clears the output
+        end else begin
+            q_o <= d_i;  // Sample data input on rising edge of clock
+        end
     end
 
-    assign q_bar = ~q;  // Complementary output
+    // Combinational output: generate complementary signal
+    assign q_bar_o = ~q_o;
 
 endmodule

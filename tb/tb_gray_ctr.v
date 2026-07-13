@@ -38,11 +38,11 @@ module tb_gray_ctr;
 
     // Module instantiation
     gray_ctr #(
-        .N(N)
+        .Width(N)
     ) dut (
-        .clk (clk),
-        .rstn(rstn),
-        .out (out)
+        .clk_i (clk),
+        .rst_n_i(rstn),
+        .out_o (out)
     );
 
     // Golden reference: verify the single-bit-change property

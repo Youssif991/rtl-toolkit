@@ -40,10 +40,10 @@ module tb_d_latch;
 
     // Module instantiation
     d_latch dut (
-        .d   (d),
-        .en  (en),
-        .rstn(rstn),
-        .q   (q)
+        .d_i   (d),
+        .en_i  (en),
+        .rst_n_i(rstn),
+        .q_o   (q)
     );
 
     // Golden reference model
@@ -51,16 +51,21 @@ module tb_d_latch;
     //   - When rstn is low, q is forced to 0 regardless of en or d.
     //   - When en is high, the latch is transparent (q follows d).
     //   - When en is low, the latch holds its previous value.
-    // The checker runs inline and flags any mismatch immediately.
-    always @(d, en, rstn, q) begin : reference
-        if (!rstn) expected_q <= 1'b0;
-        else if (en) expected_q <= d;
+    always @(*) begin : reference
+        if (!rstn) begin
+            expected_q = 1'b0;
+        end else if (en) begin
+            expected_q = d;
+        end
+        // else: expected_q holds (no assignment = implicit latch, same as DUT)
+    end
 
-        // Checker — compare on every input/output change
-        if (q !== expected_q) begin : check
+    // Checker — compare on every input or output change
+    always @(d or en or rstn or q or expected_q) begin : check
+        if (q !== expected_q) begin
             errors = errors + 1;
-            $display("FAIL at time %0t: d=%b en=%b rstn=%b | dut_q=%b expected_q=%b", $time, d, en,
-                     rstn, q, expected_q);
+            $display("FAIL at time %0t: d=%b en=%b rstn=%b | dut_q=%b expected_q=%b",
+                     $time, d, en, rstn, q, expected_q);
         end
     end
 

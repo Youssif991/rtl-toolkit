@@ -18,25 +18,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module Full_Adder (
-    input  A,
-    input  B,
-    input  Cin,
-    output Sum,
-    output Cout
+    input  A_i,
+    input  B_i,
+    input  Cin_i,
+    output Sum_o,
+    output Cout_o
 );
-    /*
-    wire AB_xor;
-    wire AB_and;
-    wire AB_Cin;
 
-    assign AB_xor = A ^ B;
-    assign AB_and = A & B;
-    assign AB_Cin = Cin & AB_xor;
+    // Concatenate carry-out and sum into a 2-bit result: {Cout, Sum} = A + B + Cin.
+    assign {Cout_o, Sum_o} = A_i + B_i + Cin_i;
 
-    assign Sum = AB_xor ^ Cin;
-    assign Cout = AB_Cin | AB_and;
-    */
-    // Second implementation: use Verilog's built-in arithmetic.
-    // {Cout, Sum} acts as a 2-bit result of the addition.
-    assign {Cout, Sum} = A + B + Cin;
 endmodule

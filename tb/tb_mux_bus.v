@@ -37,13 +37,13 @@ module tb_mux_bus;
 
     // Module instantiation
     mux_bus #(
-        .bus(bus),
-        .inputs(inputs),
-        .selection(selection)
+        .BusWidth(bus),
+        .NumInputs(inputs),
+        .SelWidth(selection)
     ) uut (
-        .in (in),
-        .s  (s),
-        .out(out)
+        .in_i (in),
+        .s_i  (s),
+        .out_o(out)
     );
 
     // Test procedure: iterate patterns and selection values

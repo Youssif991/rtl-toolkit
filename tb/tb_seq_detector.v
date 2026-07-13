@@ -48,10 +48,10 @@ module tb_seq_detector;
 
     // Module instantiation
     seq_detector dut (
-        .in  (in),
-        .clk (clk),
-        .rstn(rstn),
-        .out (out)
+        .in_i   (in),
+        .clk_i  (clk),
+        .rst_n_i(rstn),
+        .out_o  (out)
     );
 
     // Golden reference model

@@ -20,25 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module gray_ctr #(
-    parameter N = 4  // Counter's width
+    parameter Width = 4
 ) (
-    input clk,
-    input rstn,
-    output reg [N - 1 : 0] out
+    input  wire             clk_i,
+    input  wire             rst_n_i,
+    output reg  [Width-1:0] out_o
 );
 
-    reg [N - 1 : 0] q;  // temporary variable to store the binary output
+    // Internal binary counter (registered), incremented each cycle
+    reg  [Width-1:0] binary_q;
+    // Next binary value (combinational)
+    wire [Width-1:0] binary_d;
 
-    // Increment binary counter on each clock, then convert to Gray code
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin
-            q   <= 0;
-            out <= 0;
+    // Combinational: binary increment
+    assign binary_d = binary_q + 1;
+
+    // Sequential: register update with Gray-code conversion
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            binary_q <= 0;
+            out_o    <= 0;
         end else begin
-            q   <= q + 1;  // Binary increment
-
-            // Convert binary to Gray: gray = binary ^ (binary >> 1)
-            out <= {q[N-1], q[N-1 : 1] ^ q[N-2 : 0]};
+            binary_q <= binary_d;
+            // Gray-code conversion: gray = binary ^ (binary >> 1)
+            out_o    <= {binary_d[Width-1], binary_d[Width-1:1] ^ binary_d[Width-2:0]};
         end
     end
+
 endmodule

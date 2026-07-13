@@ -7,12 +7,12 @@
 // Module Name: ripple_ctr
 // Tool Versions: Vivado 2025.2
 // Description: N-bit asynchronous ripple counter built from cascaded D flip-flops.
-//              Each stage is clocked by the inverted output (`q_bar`) of the
+//              Each stage is clocked by the inverted output (`q_bar_o`) of the
 //              previous stage, creating a ripple effect. The first stage is
-//              driven by the external `clk`. Suitable for low-frequency
+//              driven by the external `clk_i`. Suitable for low-frequency
 //              division; propagation delay accumulates with each stage.
 //
-// Dependencies: d_ff (src/blocks/d_ff.v)
+// Dependencies: d_ff (src/d_ff.v)
 //
 // Revision:
 // Revision 0.01 - File Created
@@ -21,34 +21,37 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module ripple_ctr #(
-    parameter N = 4
+    parameter Width = 4
 ) (
-    input clk,
-    input rstn,
-    output [N - 1:0] out
+    input  wire             clk_i,
+    input  wire             rst_n_i,
+    output wire [Width-1:0] out_o
 );
-    // Internal flip-flop outputs: q drives the next stage's clock,
-    // q_bar is fed back to the D input for divide-by-2 operation
-    wire [N - 1 : 0] q;
-    wire [N - 1 : 0] q_bar;
+
+    wire [Width-1:0] stage_q;
+    wire [Width-1:0] stage_q_bar;
+    // Clock chain: clk_chain[i] clocks stage i; each stage toggles the next
+    wire [  Width:0] clk_chain;
+
+    assign clk_chain[0] = clk_i;
 
     genvar i;
 
-    // Generate N cascaded D flip-flop stages.
-    // Stage 0 is clocked by the external `clk`; subsequent stages are
-    // clocked by `q_bar` of the preceding stage (ripple / asynchronous).
+    // Generate: ripple stages, each clocked from the previous stage's q_bar
     generate
-        for (i = 0; i < N; i = i + 1) begin : ripple_stage
+        for (i = 0; i < Width; i = i + 1) begin : gen_ripple_stage
+            // Feed inverted output of this stage as the clock for the next stage
+            assign clk_chain[i+1] = stage_q_bar[i];
             d_ff d_inst (
-                .d(q_bar[i]),
-                .clk(i == 0 ? clk : q_bar[i-1]),
-                .rstn(rstn),
-                .q(q[i]),
-                .q_bar(q_bar[i])
+                .d_i    (stage_q_bar[i]),
+                .clk_i  (clk_chain[i]),
+                .rst_n_i(rst_n_i),
+                .q_o    (stage_q[i]),
+                .q_bar_o(stage_q_bar[i])
             );
         end
     endgenerate
 
-    assign out = q;  // Parallel output of the counter
+    assign out_o = stage_q;
 
 endmodule

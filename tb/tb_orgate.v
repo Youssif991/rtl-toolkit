@@ -31,9 +31,9 @@ module tb_orgate;
 
     // Module instantiation
     orgate dut (
-        .A(A),
-        .B(B),
-        .C(C)
+        .A_i(A),
+        .B_i(B),
+        .C_o(C)
     );
 
     // Golden reference: compute the expected OR output

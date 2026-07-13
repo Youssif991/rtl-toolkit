@@ -18,14 +18,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module mux #(
-    parameter width = 4,
-    parameter selection = $clog2(width)
+    parameter DataWidth = 4,
+    parameter SelWidth  = $clog2(DataWidth)
 ) (
-    input [width - 1 : 0] in,
-    input [selection - 1 : 0] s,
-    output out
+    input [DataWidth - 1 : 0] in_i,
+    input [SelWidth - 1 : 0] s_i,
+    output out_o
 );
 
-    // Select the bit at index `s` from the input vector
-    assign out = in[s];
+    // Bit-select: pick the bit at index s_i from the input vector in_i.
+    assign out_o = in_i[s_i];
+
 endmodule

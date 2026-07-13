@@ -17,18 +17,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module d_latch (
-    input d,  // Data input
-    input en,  // Enable input
-    input rstn,  // Reset input (active low)
-    output reg q  // Output
+    input      rst_n_i,
+    input      en_i,
+    input      d_i,
+    output reg q_o
 );
 
-    always @(en or rstn or d) begin : Latch_Logic
-        if (!rstn) begin : Async_Reset  // Asynchronous reset
-            q <= 1'b0;
-        end else if (en) begin : Latch_Enable  // When enable is high, latch the value of D
-            q <= d;
+    // Combinational latch: transparent when enabled, holding when disabled
+    //   - rst_n_i asserted:  asynchronously clear q to 0 (highest priority)
+    //   - en_i high:         q follows d_i (transparent / feed-through mode)
+    //   - en_i low:          q retains its current value (hold / opaque mode)
+    always @(*) begin
+        if (!rst_n_i) begin
+            q_o = 1'b0;  // Reset dominates all other conditions
+        end else if (en_i) begin
+            q_o = d_i;  // Transparent: output tracks input
         end
+        // When en_i is low, q_o holds its previous value (inferred latch)
     end
 
 endmodule

@@ -6,9 +6,10 @@
 // Design Name: Bus Multiplexer (parameterizable)
 // Module Name: mux_bus
 // Tool Versions: Vivado 2025.2
-// Description: This module is a multiplexer that selects one of the input buses based on the selection signal.
-// The width of the bus, number of input buses, and the number of selection lines can be parameterized.
-// The output is selected by using the selection signal to index into the concatenated input buses.
+// Description: Selects one of the input buses based on the selection signal.
+//              The width of the bus, number of input buses, and the number
+//              of selection lines can be parameterized.
+//
 // Dependencies:
 //
 // Revision:
@@ -18,18 +19,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module mux_bus #(
-    parameter bus = 4,
-    parameter inputs = 4,
-    parameter selection = $clog2(
-        inputs
-    )  // Calculate the number of selection lines needed based on the number of inputs
+    parameter BusWidth  = 4,
+    parameter NumInputs = 4,
+    parameter SelWidth  = $clog2(NumInputs)
 ) (
-    input [bus*inputs - 1:0] in,
-    input [selection - 1:0] s,
-    output [bus - 1:0] out
+    input  [BusWidth * NumInputs - 1 : 0] in_i,
+    input  [            SelWidth - 1 : 0] s_i,
+    output [            BusWidth - 1 : 0] out_o
 );
 
-    // Index into the concatenated input buses using the selection signal
-    assign out = in[s*bus+:bus];
+    // Indexed part-select: pick the bus at position s_i from the concatenated input vector.
+    assign out_o = in_i[s_i*BusWidth+:BusWidth];
 
 endmodule

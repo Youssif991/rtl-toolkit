@@ -17,24 +17,27 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-
 module pos_edge (
-    input sig,
-    input clk,
-    input rstn,
-    output reg out
+    input      clk_i,
+    input      rst_n_i,
+    input      sig_i,
+    output reg out_o
 );
 
-    reg sig_dly;
+    reg sig_d;  // Delayed version of sig_i (one clock cycle behind)
 
-    // Delay `sig` and detect rising edges; clear on active-low reset
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin
-            sig_dly <= 1'b0;
-            out     <= 1'b0;
+    // Sequential edge detector: compare current input against its delayed copy
+    //   - sig_d tracks sig_i, delayed by one cycle
+    //   - out_o goes high for one cycle when sig_i is high and sig_d is low
+    //     (i.e. a 0-to-1 transition was just detected)
+    //   - rst_n_i low forces both registers to 0 (no edge pulse)
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            sig_d <= 1'b0;
+            out_o <= 1'b0;
         end else begin
-            sig_dly <= sig;
-            out     <= sig & ~sig_dly;
+            sig_d <= sig_i;  // Delay the input by one cycle
+            out_o <= sig_i & ~sig_d;  // Rising edge: sig_i=1, previous sig_d=0
         end
     end
 

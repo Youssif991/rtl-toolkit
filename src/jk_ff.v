@@ -19,41 +19,47 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module jk_ff (
-    input j,  // Set input
-    input k,  // Reset input
-    input clk,  // Clock input
-    input rstn,  // Active low reset
-    output reg q,  // Output Q
-    output reg q_bar  // Output Q bar
+    input      clk_i,
+    input      rst_n_i,
+    input      j_i,
+    input      k_i,
+    output reg q_o,
+    output reg q_bar_o
 );
 
-    always @(posedge clk or negedge rstn) begin
-        if (!rstn) begin : Async_Reset  // Asynchronous reset
-            q <= 1'b0;
-            q_bar <= 1'b1;
+    // Sequential logic: JK truth table on rising clock edge
+    //   {j_i, k_i}  |  Behavior
+    //   ------------+--------------------------
+    //   2'b00       |  Hold (q unchanged)
+    //   2'b01       |  Reset  (q = 0)
+    //   2'b10       |  Set    (q = 1)
+    //   2'b11       |  Toggle (q = ~q)
+    always @(posedge clk_i or negedge rst_n_i) begin
+        if (!rst_n_i) begin
+            q_o     <= 1'b0;  // Asynchronous active-low reset
+            q_bar_o <= 1'b1;
         end else begin
+            // Decode JK input pair to select next state
             case ({
-                j, k
-            })  // Concatenate J and K inputs to form a 2-bit value
-                2'b00: begin : Maintain
-                    // Mantain current state
-                    q <= q;
-                    q_bar <= q_bar;
+                j_i, k_i
+            })
+                2'b00: begin
+                    // Maintain current state
                 end
-                2'b01: begin : Reset
-                    // Reset state (Q = 0)
-                    q <= 1'b0;
-                    q_bar <= 1'b1;
+                2'b01: begin
+                    q_o    <= 1'b0;
+                    q_bar_o <= 1'b1;
                 end
-                2'b10: begin : Set
-                    // Set state (Q = 1)
-                    q <= 1'b1;
-                    q_bar <= 1'b0;
+                2'b10: begin
+                    q_o    <= 1'b1;
+                    q_bar_o <= 1'b0;
                 end
-                2'b11: begin : Toggle
-                    // Toggle state
-                    q <= ~q;
-                    q_bar <= ~q_bar;
+                2'b11: begin
+                    q_o    <= ~q_o;
+                    q_bar_o <= ~q_bar_o;
+                end
+                default: begin
+                    // Maintain current state
                 end
             endcase
         end

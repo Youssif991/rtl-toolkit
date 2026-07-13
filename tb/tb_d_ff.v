@@ -35,11 +35,11 @@ module tb_d_ff;
 
     // Module instantiation
     d_ff dut (
-        .d   (d),
-        .clk (clk),
-        .rstn(rstn),
-        .q   (q),
-        .q_bar(q_bar)
+        .d_i   (d),
+        .clk_i (clk),
+        .rst_n_i(rstn),
+        .q_o   (q),
+        .q_bar_o(q_bar)
     );
 
     // Clock generation: free-running 20 ns period (50 MHz)

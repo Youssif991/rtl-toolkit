@@ -18,13 +18,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module dec_4x16 (
-    input [3:0] in,
-    input en,
-    output [15:0] out
+    input  [ 3:0] in_i,
+    input         en_i,
+    output [15:0] out_o
 );
 
-    // Shift a 1 to the bit position indicated by `in` when enabled
-    assign out = en ? 16'b1 << in : 0;
-
+    // One-hot decode: shift a 1 by in_i positions. Output is zero when disabled.
+    assign out_o = en_i ? 16'b1 << in_i : 0;
 
 endmodule

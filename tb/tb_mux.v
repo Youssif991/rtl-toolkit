@@ -36,12 +36,12 @@ module tb_mux;
 
     // Module instantiation
     mux #(
-        .width(width),
-        .selection(selection)
+        .DataWidth(width),
+        .SelWidth(selection)
     ) dut (
-        .in (in),
-        .s  (s),
-        .out(out)
+        .in_i (in),
+        .s_i  (s),
+        .out_o(out)
     );
 
     // Test procedure: exhaustively iterate all (in, s) combinations

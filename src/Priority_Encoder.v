@@ -19,22 +19,25 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module Priority_Encoder #(
-    parameter bus = 8,  // Width of each input bus
-    parameter inputs = 4  // Number of input buses
+    parameter BusWidth  = 8,
+    parameter NumInputs = 4
 ) (
-    input [bus * inputs - 1 : 0] in,  // Concatenated input buses
-    output reg [bus - 1 : 0] out  // Output bus
+    input [BusWidth * NumInputs - 1 : 0] in_i,
+    output reg [BusWidth - 1 : 0] out_o
 );
 
-    integer i;  // Declaring the loop variable
+    integer i;
 
+    // Combinational priority scan: the highest-index non-zero input bus wins.
+    // Later iterations override earlier ones, giving higher indices priority.
     always @(*) begin
+        out_o = 0;
 
-        out = 0;  // Initialize output to zero (default value)
-
-        for (i = 0; i < inputs; i = i + 1) begin  // Loop through each input bus
-            if (in[i*bus+:bus] != 0) begin  // Check if the current input bus is non-zero
-                out = in[i*bus+:bus];  // Assign the non-zero input bus to the output
+        // Iterate over all input buses from index 0 to NumInputs-1.
+        for (i = 0; i < NumInputs; i = i + 1) begin
+            // If this input bus is non-zero, assign it to the output.
+            if (in_i[i*BusWidth+:BusWidth] != 0) begin
+                out_o = in_i[i*BusWidth+:BusWidth];
             end
         end
     end

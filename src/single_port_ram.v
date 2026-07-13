@@ -29,38 +29,44 @@ module single_port_ram #(
     parameter DEPTH      = 16,
     parameter ADDR_WIDTH = 8
 ) (
-    input  wire                  clk,
-    input  wire [ADDR_WIDTH-1:0] addr,
-    input  wire [DATA_WIDTH-1:0] data_in,
-    input  wire                  write_enable,
-    input  wire                  chip_select,
-    input  wire                  output_enable,
-    output wire [DATA_WIDTH-1:0] data_out
+    input  wire                  clk_i,
+    input  wire [ADDR_WIDTH-1:0] addr_i,
+    input  wire [DATA_WIDTH-1:0] data_in_i,
+    input  wire                  write_enable_i,
+    input  wire                  chip_select_i,
+    input  wire                  output_enable_i,
+    output wire [DATA_WIDTH-1:0] data_out_o
 );
 
     // Internal address width derived from DEPTH — only this many bits
     // of the addr bus actually index the memory array.
     localparam LOG2_DEPTH = ($clog2(DEPTH) > 0) ? $clog2(DEPTH) : 1;
 
-    reg [DATA_WIDTH-1:0] mem          [0:DEPTH-1];
-    reg [DATA_WIDTH-1:0] data_out_reg;
+    // Memory array declaration
+    reg [DATA_WIDTH-1:0] mem        [0:DEPTH-1];
+    // Registered read data output
+    reg [DATA_WIDTH-1:0] data_out_q;
 
-    // Registered write and read: write takes priority when both
-    // chip_select and write_enable are asserted.
-    always @(posedge clk) begin
-        if (chip_select) begin
-            if (write_enable) begin
-                mem[addr[LOG2_DEPTH-1:0]] <= data_in;
+    // Registered read/write block: write takes priority — when both CS and
+    // WE are active, data_in_i is written to the addressed location.  When CS
+    // is active but WE is not, the addressed word is sampled into data_out_q
+    // for the next clock cycle.
+    always @(posedge clk_i) begin
+        if (chip_select_i) begin
+            if (write_enable_i) begin
+                // Write: data_in_i is stored at the selected address
+                mem[addr_i[LOG2_DEPTH-1:0]] <= data_in_i;
             end else begin
-                data_out_reg <= mem[addr[LOG2_DEPTH-1:0]];
+                // Read: sampled output is driven onto data_out_q on next cycle
+                data_out_q <= mem[addr_i[LOG2_DEPTH-1:0]];
             end
         end
     end
 
-    // Tri-state output bus: data_out_reg drives the bus only when
-    // chip_select and output_enable are active during a read cycle.
-    assign data_out = (chip_select & output_enable & !write_enable)
-                      ? data_out_reg
-                      : {DATA_WIDTH{1'bz}};
+    // Tri-state output: drive data_out_q onto the bus only during a read
+    // cycle (CS and OE active, WE inactive); otherwise float the bus.
+    assign data_out_o = (chip_select_i & output_enable_i & !write_enable_i)
+                     ? data_out_q
+                     : {DATA_WIDTH{1'bz}};
 
 endmodule
