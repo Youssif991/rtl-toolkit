@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Engineer: Youssef
-// 
+//
 // Create Date: 07/09/2026 17:03:43
 // Design Name: Sequence detector
 // Module Name: seq_detector
@@ -10,29 +10,29 @@
 //              on the serial input `in`. The output `out` is asserted (high) for one clock cycle
 //              when the full pattern is recognized, then the FSM resets to IDLE and begins a
 //              fresh search on the next input bit.
-// Dependencies: 
-// 
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Revision 1.00 - 2026-07-13 - Fixed reset bug (state_reg instead of state_next),
 //                               applied lowRISC naming conventions
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 module seq_detector (
-    input  wire        clk,
-    input  wire        rstn,
-    input  wire        in,
-    output wire        out
+    input  wire clk,
+    input  wire rstn,
+    input  wire in,
+    output wire out
 );
 
     // State encoding for the "1011" sequence detector (Moore FSM)
     localparam IDLE = 3'b000;
-    localparam S1   = 3'b001;
-    localparam S10  = 3'b010;
+    localparam S1 = 3'b001;
+    localparam S10 = 3'b010;
     localparam S101 = 3'b011;
-    localparam S1011= 3'b100;
+    localparam S1011 = 3'b100;
 
     reg [2:0] state_reg;
     reg [2:0] state_next;

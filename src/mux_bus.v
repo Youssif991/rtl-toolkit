@@ -1,20 +1,20 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Engineer: Youssef
-// 
+//
 // Create Date: 06/29/2026 05:14:00 PM
 // Design Name: Bus Multiplexer (parameterizable)
 // Module Name: mux_bus
 // Tool Versions: Vivado 2025.2
 // Description: This module is a multiplexer that selects one of the input buses based on the selection signal.
-// The width of the bus, number of input buses, and the number of selection lines can be parameterized.    
+// The width of the bus, number of input buses, and the number of selection lines can be parameterized.
 // The output is selected by using the selection signal to index into the concatenated input buses.
-// Dependencies: 
-// 
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 module mux_bus #(
@@ -29,7 +29,7 @@ module mux_bus #(
     output [bus - 1:0] out
 );
 
-  // Index into the concatenated input buses using the selection signal
-  assign out = in[s*bus+:bus];
+    // Index into the concatenated input buses using the selection signal
+    assign out = in[s*bus+:bus];
 
 endmodule
