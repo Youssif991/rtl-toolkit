@@ -61,8 +61,11 @@ module tb_seq_detector;
   // Sequential: on async reset, prime ref_next to IDLE; otherwise
   // advance ref_state to the previously computed ref_next.
   always @(posedge clk or negedge rstn) begin : reference_seq
-    if (!rstn) ref_next <= IDLE;
-    else ref_state <= ref_next;
+    if (!rstn) begin
+        ref_state <= IDLE;
+    end else begin
+        ref_state <= ref_next;
+    end
   end
 
   // Combinational: compute the next state based on the current
